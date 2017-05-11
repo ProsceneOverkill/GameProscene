@@ -45,7 +45,7 @@ class Cube {
         vectors.add(new PVector(-x, y, z));
     }
 
-    static PShape buildShape(int dx, int dy, boolean isWhite, PApplet parent){
+    static PShape buildShape(int dx, int dy, int dz, boolean isWhite, PApplet parent){
         if (isWhite)
             parent.fill(255);
         else
@@ -58,14 +58,14 @@ class Cube {
         shape2.beginShape(QUAD_STRIP);
 
         for(int i = 0; i < 10; i++)
-            shape2.vertex(vectors.get(i).x+dx, vectors.get(i).y+dy, vectors.get(i).z);
+            shape2.vertex(vectors.get(i).x+dx, vectors.get(i).y+dy, vectors.get(i).z+dz);
 
         shape2.endShape();
 
         shape3.beginShape(QUADS);
 
         for(int i = 10; i < 18; i++)
-            shape3.vertex(vectors.get(i).x+dx, vectors.get(i).y+dy, vectors.get(i).z);
+            shape3.vertex(vectors.get(i).x+dx, vectors.get(i).y+dy, vectors.get(i).z+dz);
 
         shape3.endShape();
 

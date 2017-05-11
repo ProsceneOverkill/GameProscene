@@ -1,3 +1,4 @@
+import processing.core.PShape;
 import remixlab.dandelion.geom.Quat;
 import remixlab.proscene.*;
 import processing.core.PApplet;
@@ -7,6 +8,11 @@ public class Chess extends PApplet{
 
     static Scene scene;
     Board board;
+    PShape pawn1, pawn2;
+    PShape horse1, horse2;
+    PShape tower1, tower2;
+    PShape queen1, queen2;
+    PShape king1, king2;
 
     @Override
     public void settings(){
@@ -15,6 +21,11 @@ public class Chess extends PApplet{
 
     @Override
     public void setup(){
+        pawn1 = loadShape("Pawn1.obj"); pawn2 = loadShape("Pawn2.obj");
+        horse1 = loadShape("Horse1.obj"); horse2 = loadShape("Horse2.obj");
+        tower1 = loadShape("Tower1.obj"); tower2 = loadShape("Tower2.obj");
+        queen1 = loadShape("Queen1.obj"); queen2 = loadShape("Queen2.obj");
+        king1 = loadShape("King1.obj"); king2 = loadShape("King2.obj");
         scene = new Scene(this);
         board = new Board(this);
     }

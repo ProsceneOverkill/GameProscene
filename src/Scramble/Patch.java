@@ -36,22 +36,25 @@ public class Patch extends InteractiveFrame {
             pg.stroke(200, 200, 100);
             pg.strokeWeight(3);
         } else {
-            if (number % 2 == 0) {
+            if (number % 2 == 0)
                 pg.fill(250, 250, 255);
-            } else {
+            else
                 pg.fill(100, 100, 255);
-            }
+
             pg.stroke(150, 150, 255);
             pg.strokeWeight(2);
         }
         // draw patch faces
         float thickness = 6;
+
+
         pg.beginShape();
         pg.vertex(-getSize() / 2, -getSize() / 2, -thickness);
         pg.vertex(getSize() / 2, -getSize() / 2, -thickness);
         pg.vertex(getSize() / 2, getSize() / 2, -thickness);
         pg.vertex(-getSize() / 2, getSize() / 2, -thickness);
         pg.endShape(CLOSE);
+
         pg.beginShape();
         pg.vertex(-getSize() / 2, -getSize() / 2, 0);
         pg.vertex(-getSize() / 2, getSize() / 2, 0);
@@ -76,6 +79,7 @@ public class Patch extends InteractiveFrame {
         pg.vertex(getSize() / 2, getSize() / 2, -thickness);
         pg.vertex(-getSize() / 2, getSize() / 2, -thickness);
         pg.endShape(CLOSE);
+
         // draw front face
         pg.textureMode(NORMAL);
         pg.beginShape();

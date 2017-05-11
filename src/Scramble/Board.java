@@ -52,10 +52,10 @@ public class Board {
         for (int y = 0; y < size; y++)
             for (int x = 0; x < size; x++)
                 if (patches[y][x] != null)
-                    // recompute the patch appropriate position based on current column and row count (x, y)
-                    // patches[][].getSize() * x, moves the patch relative to the board position
-                    // patches[][].getSize * (x - size / 2 + 0.5), centers the board in world space
-                    patches[y][x].setPosition(patches[y][x].getSize() * ((float) x - (float) size / 2 + 0.5f), patches[y][x].getSize() * ((float) y - (float) size / 2 + 0.5f), 0);
+                    patches[y][x].setPosition(
+                            patches[y][x].getSize() * ((float) x - (float) size / 2 + 0.5f),
+                            patches[y][x].getSize() * ((float) y - (float) size / 2 + 0.5f),
+                            0);
     }
 
     public void movePatch(Patch patch) {

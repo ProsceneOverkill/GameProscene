@@ -20,7 +20,7 @@ public class Scramble extends PApplet{
     @Override
     public void setup() {
         scene = new Scene(this); // create a Scene instance
-        scene.setAxesVisualHint(false); // hide axis
+        //scene.setAxesVisualHint(false); // hide axis
         scene.setGridVisualHint(false); // hide grid
         board = new Board(3, null, this); // create a new 3x3 board
         scene.camera().setPosition(new Vec(-20, 100, 230)); // move the camera
@@ -56,25 +56,22 @@ public class Scramble extends PApplet{
 
     @Override
     public void keyPressed() {
-        if (key == 'i' || key == 'I') {
+        if (key == 'i' || key == 'I')
             board.scramble();
-        } else if (key == 'o' || key == 'O') {
+        else if (key == 'o' || key == 'O')
             board.order();
-        } else if (key == 'p' || key == 'P') {
-            if (board.getImage() == null) {
+        else if (key == 'p' || key == 'P') {
+            if (board.getImage() == null)
                 board.setImage(loadImage("image.png"));
-            } else {
+            else
                 board.setImage(null);
-            }
             board.order();
         } else if (key == 'q') {
-            if (board.getSize() < 5) {
+            if (board.getSize() < 5)
                 board.setSize(board.getSize() + 1);
-            }
         } else if (key == 'w') {
-            if (board.getSize() > 3) {
+            if (board.getSize() > 3)
                 board.setSize(board.getSize() - 1);
-            }
         }
     }
 

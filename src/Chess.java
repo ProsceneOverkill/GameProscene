@@ -1,4 +1,3 @@
-import processing.core.PShape;
 import remixlab.dandelion.geom.Quat;
 import remixlab.proscene.*;
 import processing.core.PApplet;
@@ -11,11 +10,6 @@ public class Chess extends PApplet{
     static Piece[][] boardState = new Piece[8][8];
 
     Board board;
-    //PShape pawn1, pawn2;
-    //PShape horse1, horse2;
-    //PShape tower1, tower2;
-    //PShape queen1, queen2;
-    //PShape king1, king2;
 
     @Override
     public void settings(){
@@ -24,15 +18,41 @@ public class Chess extends PApplet{
 
     @Override
     public void setup(){
-        //pawn1 = loadShape("Pawn1.obj"); pawn2 = loadShape("Pawn2.obj");
-        //horse1 = loadShape("Horse1.obj"); horse2 = loadShape("Horse2.obj");
-        //tower1 = loadShape("Tower1.obj"); tower2 = loadShape("Tower2.obj");
-        //queen1 = loadShape("Queen1.obj"); queen2 = loadShape("Queen2.obj");
-
-        //king1 = loadShape("King1.obj"); king2 = loadShape("King2.obj");
         scene = new Scene(this);
         scene.setGridVisualHint(false);
         board = new Board(this);
+        new Queen(false, 4, 0, 14, "Queen1.obj",
+                scene, this);
+        new Queen(true, 4, 7, 14, "Queen2.obj",
+                scene, this);
+        new King(false, 3, 0, 14, "King1.obj",
+                scene, this);
+        new King(true, 3, 7, 14, "King2.obj",
+                scene, this);
+        new Tower(false, 0, 0, 14, "Tower1.obj",
+                scene, this);
+        new Tower(false, 7, 0, 14, "Tower1.obj",
+                scene, this);
+        new Tower(true, 0, 7, 14, "Tower2.obj",
+                scene, this);
+        new Tower(true, 7, 7, 14, "Tower2.obj",
+                scene, this);
+        new Horse(false, 1, 0, 14, "Horse1.obj",
+                scene, this);
+        new Horse(false, 6, 0, 14, "Horse1.obj",
+                scene, this);
+        new Horse(true, 1, 7, 14, "Horse2.obj",
+                scene, this);
+        new Horse(true, 6, 7, 14, "Horse2.obj",
+                scene, this);
+        new Bishop(false, 2, 0, 14, "Bishop1.obj",
+                scene, this);
+        new Bishop(false, 5, 0, 14, "Bishop1.obj",
+                scene, this);
+        new Bishop(true, 2, 7, 14, "Bishop2.obj",
+                scene, this);
+        new Bishop(true, 5, 7, 14, "Bishop2.obj",
+                scene, this);
     }
 
     @Override
@@ -53,10 +73,6 @@ public class Chess extends PApplet{
                 scene.camera().position().y(),
                 scene.camera().position().z(),
                 0, 0, 1, 1, 20);
-        Queen queen1 = new Queen(false, 4, 0, 14, "Queen1.obj",
-                scene, this);
-        Queen queen2 = new Queen(true, 4, 7, 14, "Queen2.obj",
-                scene, this);
         board.draw();
         scene.drawFrames();
     }

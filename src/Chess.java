@@ -29,13 +29,13 @@ public class Chess extends PApplet{
                 scene, this);
         new King(true, 3, 7, 14, "King2.obj",
                 scene, this);
-        new Tower(false, 0, 0, 14, "Tower1.obj",
+        new Tower(false, 0, 0, 7, "Tower1.obj",
                 scene, this);
-        new Tower(false, 7, 0, 14, "Tower1.obj",
+        new Tower(false, 7, 0, 7, "Tower1.obj",
                 scene, this);
-        new Tower(true, 0, 7, 14, "Tower2.obj",
+        new Tower(true, 0, 7, 10, "Tower2.obj",
                 scene, this);
-        new Tower(true, 7, 7, 14, "Tower2.obj",
+        new Tower(true, 7, 7, 10, "Tower2.obj",
                 scene, this);
         new Horse(false, 1, 0, 14, "Horse1.obj",
                 scene, this);
@@ -53,11 +53,18 @@ public class Chess extends PApplet{
                 scene, this);
         new Bishop(true, 5, 7, 14, "Bishop2.obj",
                 scene, this);
+
+        for(int i = 0; i < 8; i++){
+            new Pawn(true, i, 6, 8, "Pawn2.obj",
+                    scene, this);
+            new Pawn(false, i, 1, 8, "Pawn1.obj",
+                    scene, this);
+        }
     }
 
     @Override
     public void draw(){
-        background(0);
+        background(125);
         lights();
         directionalLight(50, 50, 50,
                 ((Quat)scene.camera().orientation()).x() - scene.camera().position().x(),

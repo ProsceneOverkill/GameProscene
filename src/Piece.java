@@ -1,4 +1,5 @@
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 import remixlab.bias.event.ClickEvent;
@@ -7,18 +8,18 @@ import remixlab.proscene.Scene;
 
 import static processing.core.PConstants.LEFT;
 
-
+//open mesh para simplificar los modelos 3D
 public abstract class Piece extends InteractiveFrame{
 
     int xpos, ypos, z;
     PShape shape;
     PApplet parent;
     static private int center = Chess.w / 2;
-    boolean isWhte;
+    boolean isWhite;
 
-    Piece(boolean isWhte, int xpos, int ypos, int z, String path, Scene scene, PApplet parent){
+    Piece(boolean isWhite, int xpos, int ypos, int z, String path, Scene scene, PApplet parent){
         super(scene);
-        this.isWhte = isWhte;
+        this.isWhite = isWhite;
         this.xpos = xpos;
         this.ypos = ypos;
         this.z = z;
@@ -37,6 +38,8 @@ public abstract class Piece extends InteractiveFrame{
     public void display(PGraphics pg) {
         pg.pushMatrix();
         pg.translate(getAbsoluteXPos(), getAbsoluteYPos(), z);
+        if(!isWhite)
+            pg.rotate(PConstants.PI);
         pg.shape(shape);
         pg.popMatrix();
     }

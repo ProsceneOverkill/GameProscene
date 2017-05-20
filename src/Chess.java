@@ -24,10 +24,9 @@ public class Chess extends PApplet{
         board = new Board(this);
 
 
-       // theBoard.setConstraint(constraints[1]);
-
-        /*new Queen(false, 4, 0, 14, "Queen1.obj",
+        new Queen(false, 4, 0, 14, "Queen1.obj",
                 scene, this);
+        /*
         new Queen(true, 4, 7, 14, "Queen2.obj",
                 scene, this);
         new King(false, 3, 0, 14, "King1.obj",

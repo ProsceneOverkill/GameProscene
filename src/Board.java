@@ -36,6 +36,7 @@ class Board {
                         (i + j)%2 == 0, parent);
                 square = new InteractiveFrame(Chess.scene, tmp);
                 square.setConstraint(theConstraints);
+                square.setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
                 myBoard.add(i, square);
             }
         }

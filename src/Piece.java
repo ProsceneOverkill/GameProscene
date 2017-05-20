@@ -3,6 +3,8 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 import remixlab.bias.event.ClickEvent;
+import remixlab.dandelion.constraint.AxisPlaneConstraint;
+import remixlab.dandelion.constraint.LocalConstraint;
 import remixlab.proscene.InteractiveFrame;
 import remixlab.proscene.Scene;
 
@@ -16,6 +18,8 @@ public abstract class Piece extends InteractiveFrame{
     PApplet parent;
     static private int center = Chess.w / 2;
     boolean isWhite;
+    AxisPlaneConstraint theRotConstraint;
+    AxisPlaneConstraint.Type fType;
 
     Piece(boolean isWhite, int xpos, int ypos, int z, String path, Scene scene, PApplet parent){
         super(scene);
@@ -25,6 +29,11 @@ public abstract class Piece extends InteractiveFrame{
         this.z = z;
         this.parent = parent;
         shape = parent.loadShape(path);
+
+        theRotConstraint = new LocalConstraint();
+        fType = AxisPlaneConstraint.Type.FORBIDDEN;
+        theRotConstraint.setRotationConstraintType(fType);
+
         disableVisualHint();
         setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
         //setPickingPrecision(PickingPrecision.FIXED);
@@ -33,6 +42,8 @@ public abstract class Piece extends InteractiveFrame{
 
         setPickingShape("pick");
         Chess.boardState[xpos][ypos] = this;
+
+        setConstraint(theRotConstraint);
     }
 
     public void display(PGraphics pg) {

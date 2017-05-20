@@ -1,3 +1,4 @@
+import remixlab.dandelion.constraint.*;
 import remixlab.dandelion.geom.Quat;
 import remixlab.proscene.*;
 import processing.core.PApplet;
@@ -21,7 +22,11 @@ public class Chess extends PApplet{
         scene = new Scene(this);
         scene.setGridVisualHint(false);
         board = new Board(this);
-        new Queen(false, 4, 0, 14, "Queen1.obj",
+
+
+       // theBoard.setConstraint(constraints[1]);
+
+        /*new Queen(false, 4, 0, 14, "Queen1.obj",
                 scene, this);
         new Queen(true, 4, 7, 14, "Queen2.obj",
                 scene, this);
@@ -59,7 +64,8 @@ public class Chess extends PApplet{
                     scene, this);
             new Pawn(false, i, 1, 8, "Pawn1.obj",
                     scene, this);
-        }
+        }*/
+
     }
 
     @Override
@@ -80,7 +86,7 @@ public class Chess extends PApplet{
                 scene.camera().position().y(),
                 scene.camera().position().z(),
                 0, 0, 1, 1, 20);
-        board.draw();
+        //board.draw();
         scene.drawFrames();
     }
 

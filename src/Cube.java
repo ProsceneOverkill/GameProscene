@@ -3,7 +3,6 @@
 import processing.core.PApplet;
 import processing.core.PShape;
 import processing.core.PVector;
-import remixlab.proscene.InteractiveFrame;
 
 import java.util.ArrayList;
 

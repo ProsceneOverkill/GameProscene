@@ -9,6 +9,17 @@ class Horse extends Piece {
 
     @Override
     boolean validMove(int x, int y){
-        return true;
+        return isIn(x, y) &&
+                (Chess.boardState[x][y] == null || Chess.boardState[x][y].isWhite != isWhite);
+    }
+
+    @Override
+    void updateAvailableMoves(){
+        for (int i = -2; i <= 2; i++)
+            if ( i != 0)
+                for (int j = -2; j <= 2; j++)
+                    if (j != 0 && j != i)
+                        if (validMove(i + xpos, j + ypos))
+                            availableMoves.add(i+xpos + (j+ypos)*8);
     }
 }

@@ -10,6 +10,15 @@ public class Chess extends PApplet{
     static int w = 20;
     static Piece[][] boardState = new Piece[8][8];
 
+    static boolean isAttacked(int x, int y, boolean isWhite){
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++)
+                if (boardState[i][j] != null && boardState[i][j].isWhite != isWhite
+                        && boardState[i][j].attacks(x, y))
+                    return true;
+        return false;
+    }
+
     Board board;
 
     @Override

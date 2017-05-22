@@ -10,7 +10,7 @@ class King extends Piece {
     @Override
     boolean validMove(int x, int y){
         return isIn(x, y) &&
-                (Chess.boardState[x][y] == null || Chess.boardState[x][y].isWhite != isWhite);
+                (Chess.boardState[y][x] == null || Chess.boardState[y][x].isWhite != isWhite);
     }
 
     @Override
@@ -26,21 +26,20 @@ class King extends Piece {
         if (validMove(xpos, ypos - 1))
             availableMoves.add(xpos + (ypos-1)*8);
         if (moves == 0 && !Chess.isAttacked(xpos, ypos, isWhite)){
-            if (Chess.boardState[xpos-4][ypos]!=null && Chess.boardState[xpos-4][ypos].moves==0) {
-                if (Chess.boardState[xpos - 1][ypos] == null &&
+            if (Chess.boardState[ypos][xpos-4]!=null && Chess.boardState[ypos][xpos-4].moves==0) {
+                if (Chess.boardState[ypos][xpos - 1] == null &&
                         !Chess.isAttacked(xpos - 1, ypos, isWhite) &&
-                        Chess.boardState[xpos - 2][ypos] == null
+                        Chess.boardState[ypos][xpos - 2] == null
                         && !Chess.isAttacked(xpos - 2, ypos, isWhite) &&
-                        Chess.boardState[xpos - 3][ypos] == null)
-
-                    availableMoves.add(xpos-2 + ypos*8);
+                        Chess.boardState[ypos][xpos - 3] == null)
+                    availableMoves.add(xpos-2 + ypos*8 + 128);
             }
-            if (Chess.boardState[xpos+3][ypos]!=null && Chess.boardState[xpos+3][ypos].moves==0) {
-                if (Chess.boardState[xpos + 1][ypos] == null &&
+            if (Chess.boardState[ypos][xpos+3]!=null && Chess.boardState[ypos][xpos+3].moves==0) {
+                if (Chess.boardState[ypos][xpos + 1] == null &&
                         !Chess.isAttacked(xpos + 1, ypos, isWhite) &&
-                        Chess.boardState[xpos + 2][ypos] == null
+                        Chess.boardState[ypos][xpos + 2] == null
                         && !Chess.isAttacked(xpos + 2, ypos, isWhite))
-                    availableMoves.add(xpos + 2 + ypos * 8);
+                    availableMoves.add(xpos + 2 + ypos * 8 + 3*64);
             }
         }
     }

@@ -1,4 +1,3 @@
-import remixlab.dandelion.constraint.*;
 import remixlab.dandelion.geom.Quat;
 import remixlab.proscene.*;
 import processing.core.PApplet;
@@ -19,6 +18,13 @@ public class Chess extends PApplet{
         return false;
     }
 
+    static private void initialize(){
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++)
+                if (boardState[i][j] != null)
+                    boardState[i][j].updateAvailableMoves();
+    }
+
     Board board;
 
     @Override
@@ -32,48 +38,51 @@ public class Chess extends PApplet{
         scene.setGridVisualHint(false);
         board = new Board(this);
 
-
-        new Queen(false, 4, 0, 14, "Queen1.obj",
-                scene, this);
         /*
-        new Queen(true, 4, 7, 14, "Queen2.obj",
+        new Queen(false, 3, 0, 14, "Queen1.obj",
                 scene, this);
-        new King(false, 3, 0, 14, "King1.obj",
+        new Queen(true, 3, 7, 14, "Queen2.obj",
                 scene, this);
-        new King(true, 3, 7, 14, "King2.obj",
+
+        new King(true, 4, 7, 14, "King2.obj",
                 scene, this);
+        new King(false, 4, 0, 14, "King1.obj",
+                scene, this);
+
         new Tower(false, 0, 0, 7, "Tower1.obj",
                 scene, this);
         new Tower(false, 7, 0, 7, "Tower1.obj",
                 scene, this);
-        new Tower(true, 0, 7, 10, "Tower2.obj",
+        new Tower(true, 0, 7, 7, "Tower2.obj",
                 scene, this);
-        new Tower(true, 7, 7, 10, "Tower2.obj",
+        new Tower(true, 7, 7, 7, "Tower2.obj",
                 scene, this);
-        new Horse(false, 1, 0, 14, "Horse1.obj",
+
+        new Horse(false, 6, 0, 8, "Horse1.obj",
                 scene, this);
-        new Horse(false, 6, 0, 14, "Horse1.obj",
+        new Horse(false, 1, 0, 8, "Horse1.obj",
+                scene, this)
+        new Horse(true, 1, 7, 8, "Horse2.obj",
                 scene, this);
-        new Horse(true, 1, 7, 14, "Horse2.obj",
+        new Horse(true, 6, 7, 8, "Horse2.obj",
                 scene, this);
-        new Horse(true, 6, 7, 14, "Horse2.obj",
+
+        new Bishop(false, 2, 0, 10, "Bishop1.obj",
                 scene, this);
-        new Bishop(false, 2, 0, 14, "Bishop1.obj",
+        new Bishop(false, 5, 0, 10, "Bishop1.obj",
                 scene, this);
-        new Bishop(false, 5, 0, 14, "Bishop1.obj",
+        new Bishop(true, 2, 7, 10, "Bishop2.obj",
                 scene, this);
-        new Bishop(true, 2, 7, 14, "Bishop2.obj",
-                scene, this);
-        new Bishop(true, 5, 7, 14, "Bishop2.obj",
+        new Bishop(true, 5, 7, 10, "Bishop2.obj",
                 scene, this);
 
         for(int i = 0; i < 8; i++){
-            new Pawn(true, i, 6, 8, "Pawn2.obj",
+            new Pawn(true, i, 6, 5, "Pawn2.obj",
                     scene, this);
-            new Pawn(false, i, 1, 8, "Pawn1.obj",
+            new Pawn(false, i, 1, 5, "Pawn1.obj",
                     scene, this);
         }*/
-
+        initialize();
     }
 
     @Override

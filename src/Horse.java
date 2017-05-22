@@ -9,17 +9,43 @@ class Horse extends Piece {
 
     @Override
     boolean validMove(int x, int y){
-        return isIn(x, y) &&
-                (Chess.boardState[x][y] == null || Chess.boardState[x][y].isWhite != isWhite);
+        return isIn(y, x) &&
+                (Chess.boardState[y][x] == null || Chess.boardState[y][x].isWhite != isWhite);
     }
 
     @Override
     void updateAvailableMoves(){
-        for (int i = -2; i <= 2; i++)
-            if ( i != 0)
-                for (int j = -2; j <= 2; j++)
-                    if (j != 0 && j != i)
-                        if (validMove(i + xpos, j + ypos))
-                            availableMoves.add(i+xpos + (j+ypos)*8);
+        int aux1 = xpos + 2;
+        int aux2 = ypos + 1;
+        if (validMove(aux1, aux2))
+            availableMoves.add(aux1 + (aux2)*8);
+        aux1 = xpos + 2;
+        aux2 = ypos - 1;
+        if (validMove(aux1, aux2))
+            availableMoves.add(aux1 + (aux2)*8);
+        aux1 = xpos - 2;
+        aux2 = ypos + 1;
+        if (validMove(aux1, aux2))
+            availableMoves.add(aux1 + (aux2)*8);
+        aux1 = xpos - 2;
+        aux2 = ypos - 1;
+        if (validMove(aux1, aux2))
+            availableMoves.add(aux1 + (aux2)*8);
+        aux1 = xpos + 1;
+        aux2 = ypos + 2;
+        if (validMove(aux1, aux2))
+            availableMoves.add(aux1 + (aux2)*8);
+        aux1 = xpos + 1;
+        aux2 = ypos - 2;
+        if (validMove(aux1, aux2))
+            availableMoves.add(aux1 + (aux2)*8);
+        aux1 = xpos - 1;
+        aux2 = ypos + 2;
+        if (validMove(aux1, aux2))
+            availableMoves.add(aux1 + (aux2)*8);
+        aux1 = xpos - 1;
+        aux2 = ypos - 2;
+        if (validMove(aux1, aux2))
+            availableMoves.add(aux1 + (aux2)*8);
     }
 }

@@ -12,13 +12,16 @@ import java.util.HashSet;
 
 import static processing.core.PConstants.LEFT;
 
-//open mesh para simplificar los modelos 3D
+
 public abstract class Piece extends InteractiveFrame{
 
     int xpos, ypos, moves = 0, prevMove = -1;
     private  int z;
     boolean pathBlocked;
-    //Moves with bitmask, first 3 bits for xpos and next 3 bits for ypos
+    //Moves with bitmask, first 3 bits for xpos, next 3 bits for ypos
+    //Move types next 3 bits, 0 for offensive, 1 for neutral, 2 for long Castling,
+    // 3 for short castling, 4 for passant capture
+    //5 for white promotion and 6 for black promotion
     HashSet<Integer> availableMoves = new HashSet<>();
 
     private PShape shape;
@@ -46,9 +49,16 @@ public abstract class Piece extends InteractiveFrame{
         setClickBinding(LEFT, 1, "play");
 
         setPickingShape("pick");
-        Chess.boardState[xpos][ypos] = this;
+        Chess.boardState[ypos][xpos] = this;
 
         setConstraint(theRotConstraint);
+    }
+
+    public void pick(PGraphics pg) {
+        pg.pushMatrix();
+        pg.translate(getAbsoluteXPos(), getAbsoluteYPos(), z);
+        pg.box(10);
+        pg.popMatrix();
     }
 
     public void display(PGraphics pg) {
@@ -60,17 +70,6 @@ public abstract class Piece extends InteractiveFrame{
         pg.popMatrix();
     }
 
-    public void pick(PGraphics pg) {
-        pg.pushMatrix();
-        pg.translate(getAbsoluteXPos(), getAbsoluteYPos(), z);
-        pg.box(10);
-        pg.popMatrix();
-    }
-
-    public void play(ClickEvent event) {
-        System.out.println("Piece clicked");
-    }
-
     private int getAbsoluteXPos(){
         return Chess.w * (xpos-4) + center;
     }
@@ -79,32 +78,66 @@ public abstract class Piece extends InteractiveFrame{
         return Chess.w * (ypos-4) + center;
     }
 
-    boolean isIn(int x, int y){
-        return x >= 0 && y >= 0 && x < 8 && y < 8;
+    public void play(ClickEvent event) {
+        System.out.println("Piece clicked, Moves:");
+        for (int i : availableMoves){
+            System.out.println("x: " + (i & 7) + ", y: " + ((i >>> 3)&7) +
+                    ", special move: " + ((i >>> 6)&7));
+        }
+    }
+
+    boolean isIn(int i, int j){
+        return i >= 0 && j >= 0 && i < 8 && j < 8;
     }
 
     boolean validMove(int x, int y){
         if (pathBlocked) return false;
-        if (!isIn(x, y)) return false;
-        if (Chess.boardState[x][y] == null)
+        if (!isIn(y, x)) return false;
+        if (Chess.boardState[y][x] == null)
             return true;
 
         pathBlocked = true;
-        return Chess.boardState[x][y].isWhite != isWhite;
+        return Chess.boardState[y][x].isWhite != isWhite;
     }
 
     abstract void updateAvailableMoves();
 
-    boolean move(int x, int y){
-        if (!validMove(x, y))
-            return false;
+    void move(int x, int y, int moveType){
         prevMove = xpos + ypos*8;
+        switch (moveType){
+            case 0:
+                Chess.boardState[y][x] = this;
+                break;
+            case 1:
+                Chess.boardState[y][x] = this;
+                break;
+            case 2:
+                Chess.boardState[y][x] = this;
+                Chess.boardState[y][3] = Chess.boardState[y][0];
+                Chess.boardState[y][0] = null;
+                break;
+            case 3:
+                Chess.boardState[y][x] = this;
+                Chess.boardState[y][5] = Chess.boardState[y][7];
+                Chess.boardState[y][7] = null;
+                break;
+            case 4:
+                Chess.boardState[y][x] = this;
+                Chess.boardState[ypos][x] = null;
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            default:
+                break;
+        }
+        Chess.boardState[ypos][xpos] = null;
         xpos = x;
         ypos = y;
         moves++;
         availableMoves.clear();
         updateAvailableMoves();
-        return true;
     }
 
     boolean attacks(int x, int y){

@@ -43,7 +43,7 @@ class Board {
 
 
 
-
+/*
         shape = parent.createShape(PConstants.GROUP);
 
         for (int i = 0; i < 8; i++){
@@ -52,7 +52,7 @@ class Board {
                         (i + j)%2 == 0, parent);
                 shape.addChild(tmp);
             }
-        }
+        }*/
     }
 
     public PShape getShape(){

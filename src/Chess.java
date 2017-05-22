@@ -6,7 +6,8 @@ import processing.core.PApplet;
 
 public class Chess extends PApplet{
 
-    static Scene scene;
+    static Scene scene, scene2;
+
     static int w = 20;
     static Piece[][] boardState = new Piece[8][8];
 
@@ -20,6 +21,7 @@ public class Chess extends PApplet{
     @Override
     public void setup(){
         scene = new Scene(this);
+        scene2 = new Scene(this, minimap)
         scene.setGridVisualHint(false);
         board = new Board(this);
 

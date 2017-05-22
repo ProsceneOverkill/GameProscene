@@ -15,4 +15,12 @@ class Queen extends Piece {
     boolean validMove(int x, int y){
         return true;
     }
+
+    public boolean isvalid(int x, int y){
+        if(x <= 40 && y <= 40 && x >= -40 && y >= -40)
+            return true;
+        return false;
+
+    }
 }
+

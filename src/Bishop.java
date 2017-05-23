@@ -8,7 +8,40 @@ class Bishop extends Piece {
     }
 
     @Override
-    boolean validMove(int x, int y){
-        return true;
+    void updateAvailableMoves(){
+        int i, j;
+        pathBlocked = false;
+        i = xpos + 1;
+        j = ypos + 1;
+        pathBlocked = false;
+        while (validMove(i, j)) {
+            availableMoves.add(i + j * 8);
+            i++;
+            j++;
+        }
+        i = xpos + 1;
+        j = ypos -1;
+        pathBlocked = false;
+        while (validMove(i, j)) {
+            availableMoves.add(i + j * 8);
+            i++;
+            j--;
+        }
+        i = xpos - 1;
+        j = ypos + 1;
+        pathBlocked = false;
+        while (validMove(i, j)) {
+            availableMoves.add(i + j * 8);
+            i--;
+            j++;
+        }
+        i = xpos - 1;
+        j = ypos - 1;
+        pathBlocked = false;
+        while (validMove(i, j)) {
+            availableMoves.add(i + j * 8);
+            i--;
+            j--;
+        }
     }
 }

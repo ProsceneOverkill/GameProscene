@@ -9,6 +9,38 @@ class King extends Piece {
 
     @Override
     boolean validMove(int x, int y){
-        return true;
+        return isIn(x, y) &&
+                (Chess.boardState[y][x] == null || Chess.boardState[y][x].isWhite != isWhite);
+    }
+
+    @Override
+    void updateAvailableMoves(){
+        for (int i = -1; i <= 1; i++){
+            if (validMove(xpos + 1, ypos + i))
+                availableMoves.add(xpos+1 + (ypos+i)*8);
+            if (validMove(xpos - 1, ypos + i))
+                availableMoves.add(xpos-1 + (ypos+i)*8);
+        }
+        if (validMove(xpos, ypos + 1))
+            availableMoves.add(xpos + (ypos+1)*8);
+        if (validMove(xpos, ypos - 1))
+            availableMoves.add(xpos + (ypos-1)*8);
+        if (moves == 0 && !Chess.isAttacked(xpos, ypos, isWhite)){
+            if (Chess.boardState[ypos][xpos-4]!=null && Chess.boardState[ypos][xpos-4].moves==0) {
+                if (Chess.boardState[ypos][xpos - 1] == null &&
+                        !Chess.isAttacked(xpos - 1, ypos, isWhite) &&
+                        Chess.boardState[ypos][xpos - 2] == null
+                        && !Chess.isAttacked(xpos - 2, ypos, isWhite) &&
+                        Chess.boardState[ypos][xpos - 3] == null)
+                    availableMoves.add(xpos-2 + ypos*8 + 128);
+            }
+            if (Chess.boardState[ypos][xpos+3]!=null && Chess.boardState[ypos][xpos+3].moves==0) {
+                if (Chess.boardState[ypos][xpos + 1] == null &&
+                        !Chess.isAttacked(xpos + 1, ypos, isWhite) &&
+                        Chess.boardState[ypos][xpos + 2] == null
+                        && !Chess.isAttacked(xpos + 2, ypos, isWhite))
+                    availableMoves.add(xpos + 2 + ypos * 8 + 3*64);
+            }
+        }
     }
 }

@@ -41,9 +41,16 @@ class Board {
             }
         }
 
+<<<<<<< HEAD
 
 
 /*
+||||||| merged common ancestors
+
+
+
+=======
+>>>>>>> 242abeef17157fe24808265c73b8b946717f51d1
         shape = parent.createShape(PConstants.GROUP);
 
         for (int i = 0; i < 8; i++){

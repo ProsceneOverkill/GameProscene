@@ -8,7 +8,35 @@ class Tower extends Piece {
     }
 
     @Override
-    boolean validMove(int x, int y){
-        return true;
+    void updateAvailableMoves(){
+        int i;
+        pathBlocked = false;
+        for (i = xpos+1; i < 8; i++){
+            if (validMove(i, ypos))
+                availableMoves.add(i + ypos*8);
+            else
+                break;
+        }
+        pathBlocked = false;
+        for (i = xpos-1; i >= 0; i--){
+            if (validMove(i, ypos))
+                availableMoves.add(i + ypos*8);
+            else
+                break;
+        }
+        pathBlocked = false;
+        for (i = ypos+1; i < 8; i++){
+            if (validMove(xpos, i))
+                availableMoves.add(xpos + i*8);
+            else
+                break;
+        }
+        pathBlocked = false;
+        for (i = ypos-1; i >= 0; i--){
+            if (validMove(xpos, i))
+                availableMoves.add(xpos + i*8);
+            else
+                break;
+        }
     }
 }

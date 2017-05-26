@@ -3,11 +3,13 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 import remixlab.bias.event.ClickEvent;
+import remixlab.bias.event.MotionShortcut;
 import remixlab.dandelion.constraint.AxisPlaneConstraint;
 import remixlab.dandelion.constraint.LocalConstraint;
 import remixlab.proscene.InteractiveFrame;
+import remixlab.proscene.MouseAgent;
 import remixlab.proscene.Scene;
-
+import remixlab.bias.Shortcut;
 import java.util.HashSet;
 
 import static processing.core.PConstants.LEFT;
@@ -50,8 +52,12 @@ public abstract class Piece extends InteractiveFrame{
 
         setPickingShape("pick");
         Chess.boardState[ypos][xpos] = this;
+        MouseAgent ma = new MouseAgent(Chess.scene);
+        removeMotionBinding(MouseAgent.WHEEL_ID);
 
         setConstraint(theRotConstraint);
+
+
     }
 
     public void pick(PGraphics pg) {

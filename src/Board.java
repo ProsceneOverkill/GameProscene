@@ -6,8 +6,10 @@ import processing.core.PShape;
 import remixlab.dandelion.constraint.AxisPlaneConstraint;
 import remixlab.dandelion.constraint.LocalConstraint;
 import remixlab.proscene.InteractiveFrame;
+import remixlab.proscene.MouseAgent;
 
 import java.util.ArrayList;
+import java.util.concurrent.SynchronousQueue;
 
 
 class Board {
@@ -27,39 +29,21 @@ class Board {
         fType = AxisPlaneConstraint.Type.FORBIDDEN; //constraint -> no translation & no rotation
         theConstraints.setRotationConstraintType(fType);
         theConstraints.setTranslationConstraintType(fType);
-        InteractiveFrame square;
+        Square square;
         PShape tmp;
 
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++){
                 tmp = Cube.buildShape(i*Chess.w-delta, j*Chess.w-delta, -4,
                         (i + j)%2 == 0, parent);
-                square = new InteractiveFrame(Chess.scene, tmp);
+                square = new Square(Chess.scene, tmp, (i + j)%2 == 0);
                 square.setConstraint(theConstraints);
+                square.removeMotionBinding(MouseAgent.WHEEL_ID);
                 square.setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
                 myBoard.add(i, square);
             }
         }
-
-<<<<<<< HEAD
-
-
-/*
-||||||| merged common ancestors
-
-
-
-=======
->>>>>>> 242abeef17157fe24808265c73b8b946717f51d1
-        shape = parent.createShape(PConstants.GROUP);
-
-        for (int i = 0; i < 8; i++){
-            for (int j = 0; j < 8; j++){
-                tmp = Cube.buildShape(i*Chess.w-delta, j*Chess.w-delta, -4,
-                        (i + j)%2 == 0, parent);
-                shape.addChild(tmp);
-            }
-        }*/
+        
     }
 
     public PShape getShape(){

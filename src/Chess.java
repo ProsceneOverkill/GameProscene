@@ -36,13 +36,14 @@ public class Chess extends PApplet{
     @Override
     public void setup(){
         scene = new Scene(this);
-        scene2 = new Scene(this, minimap)
+        //scene2 = new Scene(this, minimap)
         scene.setGridVisualHint(false);
         board = new Board(this);
 
-        /*
+
         new Queen(false, 3, 0, 14, "Queen1.obj",
                 scene, this);
+        /*
         new Queen(true, 3, 7, 14, "Queen2.obj",
                 scene, this);
 

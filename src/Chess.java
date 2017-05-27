@@ -43,7 +43,7 @@ public class Chess extends PApplet{
 
         new Queen(false, 3, 0, 14, "Queen1.obj",
                 scene, this);
-        /*
+
         new Queen(true, 3, 7, 14, "Queen2.obj",
                 scene, this);
 
@@ -51,7 +51,7 @@ public class Chess extends PApplet{
                 scene, this);
         new King(false, 4, 0, 14, "King1.obj",
                 scene, this);
-
+/*
         new Tower(false, 0, 0, 7, "Tower1.obj",
                 scene, this);
         new Tower(false, 7, 0, 7, "Tower1.obj",

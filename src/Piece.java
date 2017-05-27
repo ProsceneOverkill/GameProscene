@@ -10,6 +10,8 @@ import remixlab.proscene.InteractiveFrame;
 import remixlab.proscene.MouseAgent;
 import remixlab.proscene.Scene;
 import remixlab.bias.Shortcut;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import static processing.core.PConstants.LEFT;
@@ -20,6 +22,7 @@ public abstract class Piece extends InteractiveFrame{
     int xpos, ypos, moves = 0, prevMove = -1;
     private  int z;
     boolean pathBlocked;
+    ArrayList<Square> board;
     //Moves with bitmask, first 3 bits for xpos, next 3 bits for ypos
     //Move types next 3 bits, 0 for offensive, 1 for neutral, 2 for long Castling,
     // 3 for short castling, 4 for passant capture
@@ -57,7 +60,6 @@ public abstract class Piece extends InteractiveFrame{
 
         setConstraint(theRotConstraint);
 
-
     }
 
     public void pick(PGraphics pg) {
@@ -86,9 +88,19 @@ public abstract class Piece extends InteractiveFrame{
 
     public void play(ClickEvent event) {
         System.out.println("Piece clicked, Moves:");
+        int x;
+        int y;
+        int index;
         for (int i : availableMoves){
+            x = i & 7;
+            y = (i >>> 3)&7;
             System.out.println("x: " + (i & 7) + ", y: " + ((i >>> 3)&7) +
                     ", special move: " + ((i >>> 6)&7));
+
+            index = y*8 + x;
+            System.out.println(index);
+            Board.myBoard.get(index).paintMoves();
+
         }
     }
 

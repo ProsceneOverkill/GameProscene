@@ -11,12 +11,14 @@ import remixlab.proscene.MouseAgent;
 import java.util.ArrayList;
 import java.util.concurrent.SynchronousQueue;
 
+import static processing.core.PConstants.CLOSE;
+
 
 class Board {
 
     private PShape shape;
     private PApplet parent;
-    private ArrayList<InteractiveFrame> myBoard;
+    static  ArrayList<Square> myBoard;
     AxisPlaneConstraint theConstraints;
     AxisPlaneConstraint.Type fType;
 
@@ -40,7 +42,9 @@ class Board {
                 square.setConstraint(theConstraints);
                 square.removeMotionBinding(MouseAgent.WHEEL_ID);
                 square.setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
-                myBoard.add(i, square);
+                int index = i*8+j;
+                System.out.println("the index:" + index);
+                myBoard.add(index, square);
             }
         }
         
@@ -50,7 +54,7 @@ class Board {
         return shape;
     }
 
-    public ArrayList<InteractiveFrame> getMyBoard() {
+    public ArrayList<Square> getMyBoard() {
         return myBoard;
     }
 

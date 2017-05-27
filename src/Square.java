@@ -54,6 +54,13 @@ public class Square extends InteractiveFrame {
         super(interactiveFrame);
     }
 
+
+
+
+    public void paintMoves(){
+        sh.setFill(scene().pApplet().color(153,0,76));
+    }
+
     @Override
     public boolean checkIfGrabsInput(BogusEvent event){
         boolean j = super.checkIfGrabsInput(event);
@@ -69,4 +76,5 @@ public class Square extends InteractiveFrame {
         return j;
 
     }
+
 }

@@ -40,7 +40,6 @@ public class Chess extends PApplet{
         scene.setGridVisualHint(false);
         board = new Board(this);
 
-
         new Queen(false, 3, 0, 14, "Queen1.obj",
                 scene, this);
 

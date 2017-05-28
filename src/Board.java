@@ -27,14 +27,18 @@ class Board {
         this.parent = parent;
         Cube.initialize(10, 10, 4);
         myBoard = new ArrayList<>(64);
+        for(int i = 0; i < 64; i++){
+            myBoard.add(null);
+        }
         theConstraints = new LocalConstraint();
         fType = AxisPlaneConstraint.Type.FORBIDDEN; //constraint -> no translation & no rotation
         theConstraints.setRotationConstraintType(fType);
         theConstraints.setTranslationConstraintType(fType);
         Square square;
         PShape tmp;
-
+        int index;
         for (int i = 0; i < 8; i++){
+            index = i;
             for (int j = 0; j < 8; j++){
                 tmp = Cube.buildShape(i*Chess.w-delta, j*Chess.w-delta, -4,
                         (i + j)%2 == 0, parent);
@@ -42,9 +46,9 @@ class Board {
                 square.setConstraint(theConstraints);
                 square.removeMotionBinding(MouseAgent.WHEEL_ID);
                 square.setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
-                int index = i*8+j;
-                System.out.println("the index:" + index);
-                myBoard.add(index, square);
+
+                myBoard.set(index, square);
+                index += 8;
             }
         }
         

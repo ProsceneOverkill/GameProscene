@@ -65,8 +65,10 @@ public class Square extends InteractiveFrame {
     public boolean checkIfGrabsInput(BogusEvent event){
         boolean j = super.checkIfGrabsInput(event);
 
-        if(j)
-            sh.setFill(scene().pApplet().color(153,0,76));
+        if(j) {
+            sh.setFill(scene().pApplet().color(153, 0, 76));
+            //System.out.println("index of this: " + Board.myBoard.indexOf(this));
+        }
         else
             if(isWhite)
                 sh.setFill(scene().pApplet().color(255));

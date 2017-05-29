@@ -37,7 +37,7 @@ public class Square extends InteractiveFrame {
 
     void movePiece(){
         if (piece != null) {
-            piece.move(x, y, move);
+            piece.move(x, y, move, true);
             piece = null;
         }
         Board.resetMoves();

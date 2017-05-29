@@ -83,6 +83,8 @@ public abstract class Piece extends InteractiveFrame{
     }
 
     public void play(ClickEvent event) {
+        if (Chess.isGaveOver)
+            return;
         if (Board.squares.get(xpos+8*ypos).piece != null) {
             Board.squares.get(xpos + 8 * ypos).movePiece();
             return;
@@ -132,9 +134,9 @@ public abstract class Piece extends InteractiveFrame{
         return availableMoves.contains(x + y*8);
     }
 
-    void move(int x, int y, int moveType){
+    boolean move(int x, int y, int moveType, boolean committed){
         if (Chess.whiteTurn != isWhite)
-            return;
+            return false;
         boolean enPassant = false;
         int murderedX = 0, murderedY = 0;
         King king = isWhite ? Chess.whiteKing : Chess.blackKing;
@@ -161,6 +163,7 @@ public abstract class Piece extends InteractiveFrame{
                 murderedY = ypos;
                 Chess.boardState[ypos][x].availableMoves.clear();
                 killed = Chess.boardState[ypos][x];
+                Chess.boardState[ypos][x] = null;
                 break;
             case 5:
                 break;
@@ -192,7 +195,12 @@ public abstract class Piece extends InteractiveFrame{
         }
         if (king.isAttacked()) {
             resetMove();
-            return;
+            Chess.boardState[murderedY][murderedX] = killed;
+            return false;
+        }
+        if (!committed){
+            resetMove();
+            return true;
         }
         if (killed != null) {
             kill(killed);
@@ -202,6 +210,17 @@ public abstract class Piece extends InteractiveFrame{
         }
 
         Chess.whiteTurn = !Chess.whiteTurn;
+        if (Chess.gameOver()) {
+            Chess.isGaveOver = true;
+            king = Chess.whiteTurn ? Chess.whiteKing : Chess.blackKing;
+            if (king.isAttacked())
+                Chess.result = Chess.whiteTurn ? "Black team wins" : "White team wins";
+            else
+                Chess.result = "Stalemate, it is a draw";
+            System.out.println(Chess.result);
+
+        }
+        return true;
     }
 
     private void resetMove(){

@@ -2,6 +2,8 @@ import remixlab.dandelion.geom.Quat;
 import remixlab.proscene.*;
 import processing.core.PApplet;
 
+import java.util.HashSet;
+
 
 public class Chess extends PApplet{
 
@@ -13,7 +15,8 @@ public class Chess extends PApplet{
     private static Piece[][] deadBlack = new Piece[8][2];
     private static int deadWhiteI, deadWhiteJ, deadBlackI, deadBlackJ;
     private Board board;
-    static boolean whiteTurn = true;
+    static boolean whiteTurn = true, isGaveOver = false;
+    static String result;
     static King whiteKing, blackKing;
 
     static void killWhite(Piece piece){
@@ -57,6 +60,26 @@ public class Chess extends PApplet{
             for (int j = 0; j < 8; j++)
                 if (boardState[i][j] != null)
                     boardState[i][j].updateMovements();
+    }
+
+    static boolean gameOver(){
+        int move;
+        HashSet<Integer> tmp;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (boardState[i][j] != null && boardState[i][j].isWhite == whiteTurn) {
+                    tmp = new HashSet<>(boardState[i][j].availableMoves);
+                    for (int aux : tmp) {
+                        move = aux >>> 6;
+                        if (move == 0 || move == 4) {
+                            if (boardState[i][j].move(aux & 7, (aux >>> 3) & 7, move,false))
+                                return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -121,13 +144,9 @@ public class Chess extends PApplet{
                 scene, this);
         blackKing = new King(false, 4, 0, 14, "King1.obj",
                 scene, this);
-        new Bishop(false, 2, 0, 10, "Bishop1.obj",
+        new Queen(true, 3, 7, 14, "Queen2.obj",
                 scene, this);
-        new Bishop(false, 5, 0, 10, "Bishop1.obj",
-                scene, this);
-        new Bishop(true, 2, 7, 10, "Bishop2.obj",
-                scene, this);
-        new Bishop(true, 5, 7, 10, "Bishop2.obj",
+        new Queen(true, 2, 7, 14, "Queen2.obj",
                 scene, this);
         //loadPieces();
         updateMoves();

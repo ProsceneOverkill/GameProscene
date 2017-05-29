@@ -137,16 +137,15 @@ public abstract class Piece extends InteractiveFrame{
     boolean move(int x, int y, int moveType, boolean committed){
         if (Chess.whiteTurn != isWhite)
             return false;
-        boolean enPassant = false;
+        boolean enPassant1 = false, enPassant2 = false;
         int murderedX = 0, murderedY = 0;
         King king = isWhite ? Chess.whiteKing : Chess.blackKing;
-        Piece killed = null;
+        Piece killed = null, piece1 = null, piece2 = null;
         switch (moveType){
             case 0:
                 if (Chess.boardState[y][x] != null){
                     murderedX = x;
                     murderedY = y;
-                    Chess.boardState[y][x].availableMoves.clear();
                     killed = Chess.boardState[y][x];
                 }
                 break;
@@ -161,7 +160,6 @@ public abstract class Piece extends InteractiveFrame{
             case 4:
                 murderedX = x;
                 murderedY = ypos;
-                Chess.boardState[ypos][x].availableMoves.clear();
                 killed = Chess.boardState[ypos][x];
                 Chess.boardState[ypos][x] = null;
                 break;
@@ -170,42 +168,38 @@ public abstract class Piece extends InteractiveFrame{
             case 6:
                 break;
             case 7:
-                updatePos(x, y);
-                Chess.updateMoves();
-                enPassant = true;
-                int up = isWhite ? -1 : 1;
-                Piece piece;
-                if (isIn(ypos, xpos - 1)) {
-                    piece = Chess.boardState[ypos][xpos - 1];
-                    if (piece != null && piece instanceof Pawn && piece.isWhite != isWhite)
-                        piece.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
+                if (isIn(y, x - 1)) {
+                    piece1 = Chess.boardState[y][x - 1];
+                    if (piece1 != null && piece1 instanceof Pawn && piece1.isWhite != isWhite)
+                        enPassant1 = true;
                 }
-                if (isIn(ypos, xpos + 1)) {
-                    piece = Chess.boardState[ypos][xpos + 1];
-                    if (piece != null && piece instanceof Pawn && piece.isWhite != isWhite)
-                        piece.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
+
+                if (isIn(y, x + 1)) {
+                    piece2 = Chess.boardState[y][x + 1];
+                    if (piece2 != null && piece2 instanceof Pawn && piece2.isWhite != isWhite)
+                        enPassant2 = true;
                 }
                 break;
             default:
                 break;
         }
-        if (!enPassant) {
-            updatePos(x, y);
-            Chess.updateMoves();
-        }
+        updatePos(x, y);
+        Chess.updateMoves();
+
         if (king.isAttacked()) {
             resetMove();
             Chess.boardState[murderedY][murderedX] = killed;
+            Chess.updateMoves();
             return false;
         }
         if (!committed){
             resetMove();
+            Chess.boardState[murderedY][murderedX] = killed;
+            Chess.updateMoves();
             return true;
         }
         if (killed != null) {
             kill(killed);
-            if (murderedY == ypos)
-                Chess.boardState[ypos][murderedX] = null;
             Chess.updateMoves();
         }
 
@@ -220,6 +214,16 @@ public abstract class Piece extends InteractiveFrame{
             System.out.println(Chess.result);
 
         }
+
+        if (enPassant1) {
+            int up = isWhite ? -1 : 1;
+            piece1.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
+        }
+        if (enPassant2) {
+            int up = isWhite ? -1 : 1;
+            piece2.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
+        }
+
         return true;
     }
 
@@ -231,7 +235,6 @@ public abstract class Piece extends InteractiveFrame{
         xpos = x;
         ypos = y;
         moves--;
-        Chess.updateMoves();
     }
 
     private void updatePos(int x, int y){

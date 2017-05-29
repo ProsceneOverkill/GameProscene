@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 class Board {
     
-    private static ArrayList<Square> squares;
+    static ArrayList<Square> squares;
 
     static void setMove(int index, Piece piece, int move){
         squares.get(index).setMove(piece, move);

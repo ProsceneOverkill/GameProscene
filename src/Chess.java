@@ -116,14 +116,7 @@ public class Chess extends PApplet{
         scene.setGridVisualHint(false);
         board = new Board(this);
 
-
-        for(int i = 0; i < 8; i++){
-            new Pawn(true, i, 6, 5, "Pawn2.obj",
-                    scene, this);
-            new Pawn(false, i, 1, 5, "Pawn1.obj",
-                    scene, this);
-        }
-        //loadPieces();
+        loadPieces();
         updateMoves();
     }
 

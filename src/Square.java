@@ -32,6 +32,10 @@ public class Square extends InteractiveFrame {
     }
 
     public void play(ClickEvent event) {
+        movePiece();
+    }
+
+    void movePiece(){
         if (piece != null) {
             piece.move(x, y, move);
             piece = null;

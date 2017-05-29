@@ -1,5 +1,4 @@
 import processing.core.PShape;
-import remixlab.bias.BogusEvent;
 import remixlab.bias.event.ClickEvent;
 import remixlab.proscene.InteractiveFrame;
 import remixlab.proscene.Scene;
@@ -23,6 +22,7 @@ public class Square extends InteractiveFrame {
 
     void removeMove(){
         piece = null;
+        undo();
     }
 
     void setMove(Piece piece, int move){
@@ -47,18 +47,10 @@ public class Square extends InteractiveFrame {
         sh.setFill(scene().pApplet().color(153,0,76));
     }
 
-    @Override
-    public boolean checkIfGrabsInput(BogusEvent event){
-        boolean j = super.checkIfGrabsInput(event);
-
-        if(j)
-            sh.setFill(scene().pApplet().color(153, 0, 76));
+    private void undo(){
+        if(isWhite)
+            sh.setFill(scene().pApplet().color(255));
         else
-            if(isWhite)
-                sh.setFill(scene().pApplet().color(255));
-            else
-                sh.setFill(scene().pApplet().color(0));
-
-        return j;
+            sh.setFill(scene().pApplet().color(0));
     }
 }

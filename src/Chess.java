@@ -144,12 +144,6 @@ public class Chess extends PApplet{
                 scene, this);
         blackKing = new King(false, 4, 0, 14, "King1.obj",
                 scene, this);
-        for(int i = 0; i < 8; i++){
-            new Pawn(true, i, 6, 5, "Pawn2.obj",
-                    scene, this);
-            new Pawn(false, i, 1, 5, "Pawn1.obj",
-                    scene, this);
-        }
         //loadPieces();
         updateMoves();
     }

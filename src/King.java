@@ -25,8 +25,8 @@ class King extends Piece {
             availableMoves.add(xpos + (ypos+1)*8);
         if (validMove(xpos, ypos - 1))
             availableMoves.add(xpos + (ypos-1)*8);
-        if (moves == 0 && !Chess.isAttacked(xpos, ypos, isWhite)){
-            if (Chess.boardState[ypos][xpos-4]!=null && Chess.boardState[ypos][xpos-4].moves==0) {
+        if (moves == 0 && !isAttacked()){
+            if (Chess.boardState[ypos][0]!=null && Chess.boardState[ypos][0].moves==0) {
                 if (Chess.boardState[ypos][xpos - 1] == null &&
                         !Chess.isAttacked(xpos - 1, ypos, isWhite) &&
                         Chess.boardState[ypos][xpos - 2] == null
@@ -34,7 +34,7 @@ class King extends Piece {
                         Chess.boardState[ypos][xpos - 3] == null)
                     availableMoves.add(xpos-2 + ypos*8 + 128);
             }
-            if (Chess.boardState[ypos][xpos+3]!=null && Chess.boardState[ypos][xpos+3].moves==0) {
+            if (Chess.boardState[ypos][7]!=null && Chess.boardState[ypos][7].moves==0) {
                 if (Chess.boardState[ypos][xpos + 1] == null &&
                         !Chess.isAttacked(xpos + 1, ypos, isWhite) &&
                         Chess.boardState[ypos][xpos + 2] == null

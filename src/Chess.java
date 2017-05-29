@@ -14,6 +14,7 @@ public class Chess extends PApplet{
     private static int deadWhiteI, deadWhiteJ, deadBlackI, deadBlackJ;
     private Board board;
     static boolean whiteTurn = true;
+    static King whiteKing, blackKing;
 
     static void killWhite(Piece piece){
         deadWithe[deadWhiteI][deadWhiteJ] = piece;
@@ -69,9 +70,9 @@ public class Chess extends PApplet{
         new Queen(true, 3, 7, 14, "Queen2.obj",
                 scene, this);
 
-        new King(true, 4, 7, 14, "King2.obj",
+        whiteKing = new King(true, 4, 7, 14, "King2.obj",
                 scene, this);
-        new King(false, 4, 0, 14, "King1.obj",
+        blackKing = new King(false, 4, 0, 14, "King1.obj",
                 scene, this);
 
         new Tower(false, 0, 0, 7, "Tower1.obj",
@@ -116,6 +117,10 @@ public class Chess extends PApplet{
         scene.setGridVisualHint(false);
         board = new Board(this);
 
+        whiteKing = new King(true, 4, 7, 14, "King2.obj",
+                scene, this);
+        blackKing = new King(false, 4, 0, 14, "King1.obj",
+                scene, this);
         new Bishop(false, 2, 0, 10, "Bishop1.obj",
                 scene, this);
         new Bishop(false, 5, 0, 10, "Bishop1.obj",

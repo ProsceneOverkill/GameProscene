@@ -37,7 +37,9 @@ public abstract class Piece extends InteractiveFrame{
         this.xpos = xpos;
         this.ypos = ypos;
         this.z = z;
+        prevMove = xpos + ypos*8;
         shape = parent.loadShape(path);
+
 
         AxisPlaneConstraint theRotConstraint = new LocalConstraint();
         AxisPlaneConstraint.Type fType = AxisPlaneConstraint.Type.FORBIDDEN;
@@ -86,7 +88,7 @@ public abstract class Piece extends InteractiveFrame{
             return;
         }
         Board.resetMoves();
-        if (!isDead && Chess.whiteTurn == isWhite) {
+        if (!isDead) {
             for (int i : availableMoves)
                 Board.setMove(i & 63, this, i >>> 6);
         }
@@ -113,22 +115,38 @@ public abstract class Piece extends InteractiveFrame{
         updateAvailableMoves();
     }
 
-    private void kill(int i, int j){
-        Chess.boardState[i][j].isDead = true;
+    private void kill(Piece piece){
+        piece.isDead = true;
         if (isWhite)
-            Chess.killWhite(Chess.boardState[i][j]);
+            Chess.killWhite(piece);
         else
-            Chess.killBlack(Chess.boardState[i][j]);
-        Chess.boardState[i][j].z -= 8;
-        Chess.boardState[i][j] = null;
+            Chess.killBlack(piece);
+        piece.z -= 8;
+    }
+
+    boolean isAttacked(){
+        return Chess.isAttacked(xpos, ypos, isWhite);
+    }
+
+    boolean attacks(int x, int y){
+        return availableMoves.contains(x + y*8);
     }
 
     void move(int x, int y, int moveType){
+        if (Chess.whiteTurn != isWhite)
+            return;
         boolean enPassant = false;
+        int murderedX = 0, murderedY = 0;
+        King king = isWhite ? Chess.whiteKing : Chess.blackKing;
+        Piece killed = null;
         switch (moveType){
             case 0:
-                if (Chess.boardState[y][x] != null)
-                    kill(y, x);
+                if (Chess.boardState[y][x] != null){
+                    murderedX = x;
+                    murderedY = y;
+                    Chess.boardState[y][x].availableMoves.clear();
+                    killed = Chess.boardState[y][x];
+                }
                 break;
             case 1:
                 break;
@@ -139,7 +157,10 @@ public abstract class Piece extends InteractiveFrame{
                 Chess.boardState[y][7].updatePos(5, y);
                 break;
             case 4:
-                kill(ypos, x);
+                murderedX = x;
+                murderedY = ypos;
+                Chess.boardState[ypos][x].availableMoves.clear();
+                killed = Chess.boardState[ypos][x];
                 break;
             case 5:
                 break;
@@ -169,7 +190,29 @@ public abstract class Piece extends InteractiveFrame{
             updatePos(x, y);
             Chess.updateMoves();
         }
+        if (king.isAttacked()) {
+            resetMove();
+            return;
+        }
+        if (killed != null) {
+            kill(killed);
+            if (murderedY == ypos)
+                Chess.boardState[ypos][murderedX] = null;
+            Chess.updateMoves();
+        }
+
         Chess.whiteTurn = !Chess.whiteTurn;
+    }
+
+    private void resetMove(){
+        int x = prevMove & 7;
+        int y = prevMove >>> 3;
+        Chess.boardState[y][x] = this;
+        Chess.boardState[ypos][xpos] = null;
+        xpos = x;
+        ypos = y;
+        moves--;
+        Chess.updateMoves();
     }
 
     private void updatePos(int x, int y){
@@ -179,9 +222,5 @@ public abstract class Piece extends InteractiveFrame{
         xpos = x;
         ypos = y;
         moves++;
-    }
-
-    boolean attacks(int x, int y){
-        return availableMoves.contains(x + y*8);
     }
 }

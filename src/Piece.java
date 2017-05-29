@@ -23,7 +23,7 @@ public abstract class Piece extends InteractiveFrame{
         Moves with bitmask, first 3 bits for xpos, next 3 bits for ypos
         Move types next 3 bits, 0 for offensive, 1 for neutral, 2 for long Castling,
         3 for short castling, 4 for passant capture
-        5 for white promotion and 6 for black promotion
+        5 for white promotion, 6 for black promotion, 7 for long move pawn
     */
     HashSet<Integer> availableMoves = new HashSet<>();
 
@@ -81,8 +81,8 @@ public abstract class Piece extends InteractiveFrame{
     }
 
     public void play(ClickEvent event) {
+        Board.resetMoves();
         if (!isDead) {
-            Board.resetMoves();
             for (int i : availableMoves)
                 Board.setMove(i & 63, this, i >>> 6);
         }
@@ -104,7 +104,7 @@ public abstract class Piece extends InteractiveFrame{
 
     abstract void updateAvailableMoves();
 
-    void updateMoves(){
+    void updateMovements(){
         availableMoves.clear();
         updateAvailableMoves();
     }
@@ -120,13 +120,13 @@ public abstract class Piece extends InteractiveFrame{
     }
 
     void move(int x, int y, int moveType){
+        boolean enPassant = false;
         switch (moveType){
             case 0:
                 if (Chess.boardState[y][x] != null)
                     kill(y, x);
                 break;
             case 1:
-                Chess.boardState[y][x] = this;
                 break;
             case 2:
                 Chess.boardState[y][0].updatePos(3, y);
@@ -141,11 +141,30 @@ public abstract class Piece extends InteractiveFrame{
                 break;
             case 6:
                 break;
+            case 7:
+                updatePos(x, y);
+                Chess.updateMoves();
+                enPassant = true;
+                int up = isWhite ? -1 : 1;
+                Piece piece;
+                if (isIn(ypos, xpos - 1)) {
+                    piece = Chess.boardState[ypos][xpos - 1];
+                    if (piece != null && piece instanceof Pawn && piece.isWhite != isWhite)
+                        piece.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
+                }
+                if (isIn(ypos, xpos + 1)) {
+                    piece = Chess.boardState[ypos][xpos + 1];
+                    if (piece != null && piece instanceof Pawn && piece.isWhite != isWhite)
+                        piece.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
+                }
+                break;
             default:
                 break;
         }
-        updatePos(x, y);
-        Chess.updateMoves();
+        if (!enPassant) {
+            updatePos(x, y);
+            Chess.updateMoves();
+        }
     }
 
     private void updatePos(int x, int y){

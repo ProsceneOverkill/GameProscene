@@ -35,23 +35,7 @@ class Pawn extends Piece {
         if (moves == 0){
             up *= 2;
             if (validMove(xpos, ypos+up))
-                availableMoves.add(xpos + 8*(ypos+up) + 64);
-        }
-        if (moves == 1 &&  Math.abs((prevMove >>> 3) - ypos) == 2) {
-            Piece piece;
-            if (isIn(ypos, xpos - 1)) {
-                piece = Chess.boardState[ypos][xpos - 1];
-                if (piece != null && piece instanceof Pawn && piece.isWhite != isWhite) {
-                    piece.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
-                    System.out.println("lol");
-                }
-            }
-            if (isIn(ypos, xpos + 1)) {
-                piece = Chess.boardState[ypos][xpos + 1];
-                if (piece != null && piece instanceof Pawn && piece.isWhite != isWhite) {
-                    piece.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
-                }
-            }
+                availableMoves.add(xpos + 8*(ypos+up) + 7*64);
         }
     }
 }

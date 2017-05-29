@@ -53,7 +53,7 @@ public class Chess extends PApplet{
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
                 if (boardState[i][j] != null)
-                    boardState[i][j].updateMoves();
+                    boardState[i][j].updateMovements();
     }
 
     @Override

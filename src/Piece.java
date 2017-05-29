@@ -52,9 +52,9 @@ public abstract class Piece extends InteractiveFrame{
 
         setPickingShape("pick");
         Chess.boardState[ypos][xpos] = this;
-        MouseAgent ma = new MouseAgent(Chess.scene);
-        removeMotionBinding(MouseAgent.WHEEL_ID);
 
+        removeMotionBinding(MouseAgent.WHEEL_ID);
+        removeMotionBinding(MouseAgent.RIGHT_CLICK_ID);
         setConstraint(theRotConstraint);
     }
 

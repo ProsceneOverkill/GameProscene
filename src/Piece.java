@@ -81,8 +81,10 @@ public abstract class Piece extends InteractiveFrame{
     }
 
     public void play(ClickEvent event) {
-        if (Board.squares.get(xpos+8*ypos).piece != null)
-            Board.squares.get(xpos+8*ypos).movePiece();
+        if (Board.squares.get(xpos+8*ypos).piece != null) {
+            Board.squares.get(xpos + 8 * ypos).movePiece();
+            return;
+        }
         Board.resetMoves();
         if (!isDead && Chess.whiteTurn == isWhite) {
             for (int i : availableMoves)

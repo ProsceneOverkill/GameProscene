@@ -116,7 +116,15 @@ public class Chess extends PApplet{
         scene.setGridVisualHint(false);
         board = new Board(this);
 
-        loadPieces();
+        new Bishop(false, 2, 0, 10, "Bishop1.obj",
+                scene, this);
+        new Bishop(false, 5, 0, 10, "Bishop1.obj",
+                scene, this);
+        new Bishop(true, 2, 7, 10, "Bishop2.obj",
+                scene, this);
+        new Bishop(true, 5, 7, 10, "Bishop2.obj",
+                scene, this);
+        //loadPieces();
         updateMoves();
     }
 

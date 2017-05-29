@@ -1,3 +1,4 @@
 .idea
 Chess.iml
 out
+data/config.json

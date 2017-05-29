@@ -82,7 +82,7 @@ public abstract class Piece extends InteractiveFrame{
 
     public void play(ClickEvent event) {
         Board.resetMoves();
-        if (!isDead) {
+        if (!isDead && Chess.whiteTurn == isWhite) {
             for (int i : availableMoves)
                 Board.setMove(i & 63, this, i >>> 6);
         }
@@ -165,6 +165,7 @@ public abstract class Piece extends InteractiveFrame{
             updatePos(x, y);
             Chess.updateMoves();
         }
+        Chess.whiteTurn = !Chess.whiteTurn;
     }
 
     private void updatePos(int x, int y){

@@ -13,6 +13,7 @@ public class Chess extends PApplet{
     private static Piece[][] deadBlack = new Piece[8][2];
     private static int deadWhiteI, deadWhiteJ, deadBlackI, deadBlackJ;
     private Board board;
+    static boolean whiteTurn = true;
 
     static void killWhite(Piece piece){
         deadWithe[deadWhiteI][deadWhiteJ] = piece;
@@ -50,6 +51,7 @@ public class Chess extends PApplet{
     }
 
     static void updateMoves(){
+        Board.resetMoves();
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
                 if (boardState[i][j] != null)

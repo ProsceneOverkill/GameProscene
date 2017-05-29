@@ -32,11 +32,11 @@ public class Square extends InteractiveFrame {
     }
 
     public void play(ClickEvent event) {
-        Board.resetMoves();
         if (piece != null) {
             piece.move(x, y, move);
             piece = null;
         }
+        Board.resetMoves();
     }
 
     private void highlight(){

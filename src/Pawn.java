@@ -37,17 +37,21 @@ class Pawn extends Piece {
             if (validMove(xpos, ypos+up))
                 availableMoves.add(xpos + 8*(ypos+up) + 64);
         }
-        if (isIn(ypos, xpos+1))
-            if ((Chess.boardState[ypos][xpos+1] instanceof Pawn)){
-                Piece piece = Chess.boardState[ypos][xpos+1];
-                if (piece.moves == 1 && Math.abs(piece.prevMove >>> 3 - piece.ypos) == 2)
-                    availableMoves.add(xpos+1 + (ypos+up)*8 + 4*64);
+        if (moves == 1 &&  Math.abs((prevMove >>> 3) - ypos) == 2) {
+            Piece piece;
+            if (isIn(ypos, xpos - 1)) {
+                piece = Chess.boardState[ypos][xpos - 1];
+                if (piece != null && piece instanceof Pawn && piece.isWhite != isWhite) {
+                    piece.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
+                    System.out.println("lol");
+                }
             }
-        if (isIn(ypos, xpos-1))
-            if ((Chess.boardState[ypos][xpos-1] instanceof Pawn)){
-                Piece piece = Chess.boardState[ypos][xpos-1];
-                if (piece.moves == 1 && Math.abs(piece.prevMove >>> 3 - piece.ypos) == 2)
-                    availableMoves.add(xpos-1 + (ypos+up)*8 + 4*64);
+            if (isIn(ypos, xpos + 1)) {
+                piece = Chess.boardState[ypos][xpos + 1];
+                if (piece != null && piece instanceof Pawn && piece.isWhite != isWhite) {
+                    piece.availableMoves.add(xpos + (ypos - up) * 8 + 4 * 64);
+                }
             }
+        }
     }
 }

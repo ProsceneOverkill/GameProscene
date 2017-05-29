@@ -74,12 +74,4 @@ class Queen extends Piece {
             j--;
         }
     }
-
-    public boolean isvalid(int x, int y){
-        if(x <= 40 && y <= 40 && x >= -40 && y >= -40)
-            return true;
-        return false;
-
-    }
 }
-

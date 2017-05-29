@@ -1,7 +1,6 @@
 //Implementado desde cero
 
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PShape;
 import remixlab.dandelion.constraint.AxisPlaneConstraint;
 import remixlab.dandelion.constraint.LocalConstraint;
@@ -9,29 +8,30 @@ import remixlab.proscene.InteractiveFrame;
 import remixlab.proscene.MouseAgent;
 
 import java.util.ArrayList;
-import java.util.concurrent.SynchronousQueue;
-
-import static processing.core.PConstants.CLOSE;
 
 
 class Board {
+    
+    private static ArrayList<Square> squares;
 
-    private PShape shape;
-    private PApplet parent;
-    static  ArrayList<Square> myBoard;
-    AxisPlaneConstraint theConstraints;
-    AxisPlaneConstraint.Type fType;
+    static void setMove(int index, Piece piece, int move){
+        squares.get(index).setMove(piece, move);
+    }
+
+    static void resetMoves(){
+        for (Square square : squares)
+            square.removeMove();
+    }
 
     Board(PApplet parent){
         int delta = 4 * Chess.w - Chess.w / 2;
-        this.parent = parent;
         Cube.initialize(10, 10, 4);
-        myBoard = new ArrayList<>(64);
-        for(int i = 0; i < 64; i++){
-            myBoard.add(null);
-        }
-        theConstraints = new LocalConstraint();
-        fType = AxisPlaneConstraint.Type.FORBIDDEN; //constraint -> no translation & no rotation
+        squares = new ArrayList<>(64);
+        for(int i = 0; i < 64; i++)
+            squares.add(null);
+
+        AxisPlaneConstraint theConstraints = new LocalConstraint();
+        AxisPlaneConstraint.Type fType = AxisPlaneConstraint.Type.FORBIDDEN;
         theConstraints.setRotationConstraintType(fType);
         theConstraints.setTranslationConstraintType(fType);
         Square square;
@@ -42,27 +42,14 @@ class Board {
             for (int j = 0; j < 8; j++){
                 tmp = Cube.buildShape(i*Chess.w-delta, j*Chess.w-delta, -4,
                         (i + j)%2 == 0, parent);
-                square = new Square(Chess.scene, tmp, (i + j)%2 == 0);
+                square = new Square(Chess.scene, tmp, (i + j)%2 == 0, i, j);
                 square.setConstraint(theConstraints);
                 square.removeMotionBinding(MouseAgent.WHEEL_ID);
                 square.setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
 
-                myBoard.set(index, square);
+                squares.set(index, square);
                 index += 8;
             }
         }
-        
-    }
-
-    public PShape getShape(){
-        return shape;
-    }
-
-    public ArrayList<Square> getMyBoard() {
-        return myBoard;
-    }
-
-    void draw(){
-        parent.shape(shape);
     }
 }

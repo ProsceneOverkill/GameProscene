@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import static processing.core.PConstants.GROUP;
 import static processing.core.PConstants.QUADS;
 import static processing.core.PConstants.QUAD_STRIP;
-import static processing.core.PConstants.CLOSE;
 
 class Cube {
 
-    static ArrayList<PVector> vectors;
+    static private ArrayList<PVector> vectors;
 
     static void initialize(int x, int y, int z){
         vectors = new ArrayList<>();
@@ -76,23 +75,4 @@ class Cube {
         shape.addChild(shape3);
         return shape;
     }
-
-
-    static PShape frontShape(int dx, int dy, int dz, PApplet parent){
-
-       PShape shape = parent.createShape();
-       /*
-        shape.fill(255 ,0 ,0 );
-        shape.beginShape();
-        shape.vertex(vectors.get(0).x, vectors.get(0).y, vectors.get(0).z);
-        shape.vertex(vectors.get(1).x, vectors.get(1).y, vectors.get(1).z);
-
-        shape.vertex(vectors.get(3).x, vectors.get(3).y, vectors.get(3).z);
-        shape.vertex(vectors.get(2).x, vectors.get(2).y, vectors.get(2).z);
-        shape.endShape(CLOSE);
-        return shape; */
-       return shape;
-    }
-
-
 }

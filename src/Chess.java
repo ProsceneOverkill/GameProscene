@@ -9,6 +9,36 @@ public class Chess extends PApplet{
 
     static int w = 20;
     static Piece[][] boardState = new Piece[8][8];
+    private static Piece[][] deadWithe = new Piece[8][2];
+    private static Piece[][] deadBlack = new Piece[8][2];
+    private static int deadWhiteI, deadWhiteJ, deadBlackI, deadBlackJ;
+    private Board board;
+
+    static void killWhite(Piece piece){
+        deadWithe[deadWhiteI][deadWhiteJ] = piece;
+        piece.xpos = deadWhiteJ + 8;
+        piece.ypos = deadWhiteI;
+        deadWhiteJ++;
+        if (deadWhiteJ == 2){
+            deadWhiteJ = 0;
+            deadWhiteI++;
+            if (deadWhiteI == 8)
+                deadWhiteI = deadWhiteJ = 0;
+        }
+    }
+
+    static void killBlack(Piece piece){
+        deadBlack[deadBlackI][deadBlackJ] = piece;
+        piece.xpos = -deadBlackJ - 1;
+        piece.ypos = 7 - deadBlackI;
+        deadBlackJ++;
+        if (deadBlackJ == 2){
+            deadBlackJ = 0;
+            deadBlackI++;
+            if (deadBlackI == 8)
+                deadBlackI = deadBlackJ = 0;
+        }
+    }
 
     static boolean isAttacked(int x, int y, boolean isWhite){
         for (int i = 0; i < 8; i++)
@@ -19,30 +49,21 @@ public class Chess extends PApplet{
         return false;
     }
 
-    static private void initialize(){
+    static void updateMoves(){
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
                 if (boardState[i][j] != null)
-                    boardState[i][j].updateAvailableMoves();
+                    boardState[i][j].updateMoves();
     }
-
-    Board board;
 
     @Override
     public void settings(){
         size(700,700, P3D);
     }
 
-    @Override
-    public void setup(){
-        scene = new Scene(this);
-        //scene2 = new Scene(this, minimap)
-        scene.setGridVisualHint(false);
-        board = new Board(this);
-
+    void loadPieces(){
         new Queen(false, 3, 0, 14, "Queen1.obj",
                 scene, this);
-
         new Queen(true, 3, 7, 14, "Queen2.obj",
                 scene, this);
 
@@ -50,7 +71,7 @@ public class Chess extends PApplet{
                 scene, this);
         new King(false, 4, 0, 14, "King1.obj",
                 scene, this);
-/*
+
         new Tower(false, 0, 0, 7, "Tower1.obj",
                 scene, this);
         new Tower(false, 7, 0, 7, "Tower1.obj",
@@ -63,7 +84,7 @@ public class Chess extends PApplet{
         new Horse(false, 6, 0, 8, "Horse1.obj",
                 scene, this);
         new Horse(false, 1, 0, 8, "Horse1.obj",
-                scene, this)
+                scene, this);
         new Horse(true, 1, 7, 8, "Horse2.obj",
                 scene, this);
         new Horse(true, 6, 7, 8, "Horse2.obj",
@@ -83,8 +104,25 @@ public class Chess extends PApplet{
                     scene, this);
             new Pawn(false, i, 1, 5, "Pawn1.obj",
                     scene, this);
-        }*/
-        initialize();
+        }
+    }
+
+    @Override
+    public void setup(){
+        scene = new Scene(this);
+        //scene2 = new Scene(this, minimap)
+        scene.setGridVisualHint(false);
+        board = new Board(this);
+
+
+        for(int i = 0; i < 8; i++){
+            new Pawn(true, i, 6, 5, "Pawn2.obj",
+                    scene, this);
+            new Pawn(false, i, 1, 5, "Pawn1.obj",
+                    scene, this);
+        }
+        //loadPieces();
+        updateMoves();
     }
 
     @Override
@@ -105,7 +143,7 @@ public class Chess extends PApplet{
                 scene.camera().position().y(),
                 scene.camera().position().z(),
                 0, 0, 1, 1, 20);
-        //board.draw();
+
         scene.drawFrames();
     }
 

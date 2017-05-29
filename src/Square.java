@@ -1,63 +1,45 @@
 import processing.core.PShape;
 import remixlab.bias.BogusEvent;
-import remixlab.dandelion.core.Eye;
-import remixlab.dandelion.core.GenericFrame;
+import remixlab.bias.event.ClickEvent;
 import remixlab.proscene.InteractiveFrame;
 import remixlab.proscene.Scene;
+import static processing.core.PConstants.LEFT;
 
-/**
- * Created by alvaro on 25/05/17.
- */
+
 public class Square extends InteractiveFrame {
-    PShape sh;
+    private PShape sh;
     boolean isWhite;
+    Piece piece;
+    private int x, y, move = 0;
 
-    public Square(Eye eye) {
-        super(eye);
-    }
-
-    public Square(Scene scene) {
-        super(scene);
-    }
-
-    public Square(Scene scene, GenericFrame genericFrame) {
-        super(scene, genericFrame);
-    }
-
-    public Square(Scene scene, PShape pShape, boolean isWhite) {
+    Square(Scene scene, PShape pShape, boolean isWhite, int x, int y) {
         super(scene, pShape);
         sh = pShape;
         this.isWhite = isWhite;
+        this.x = x;
+        this.y = y;
+        setClickBinding(LEFT, 1, "play");
     }
 
-    public Square(Scene scene, GenericFrame genericFrame, PShape pShape) {
-        super(scene, genericFrame, pShape);
+    void removeMove(){
+        piece = null;
     }
 
-    public Square(Scene scene, String s) {
-        super(scene, s);
+    void setMove(Piece piece, int move){
+        this.piece = piece;
+        this.move = move;
+        highlight();
     }
 
-    public Square(Scene scene, Object o, String s) {
-        super(scene, o, s);
+    public void play(ClickEvent event) {
+        if (piece != null) {
+            piece.move(x, y, move);
+            piece = null;
+            Chess.updateMoves();
+        }
     }
 
-    public Square(Scene scene, GenericFrame genericFrame, String s) {
-        super(scene, genericFrame, s);
-    }
-
-    public Square(Scene scene, GenericFrame genericFrame, Object o, String s) {
-        super(scene, genericFrame, o, s);
-    }
-
-    protected Square(InteractiveFrame interactiveFrame) {
-        super(interactiveFrame);
-    }
-
-
-
-
-    public void paintMoves(){
+    private void highlight(){
         sh.setFill(scene().pApplet().color(153,0,76));
     }
 
@@ -65,10 +47,8 @@ public class Square extends InteractiveFrame {
     public boolean checkIfGrabsInput(BogusEvent event){
         boolean j = super.checkIfGrabsInput(event);
 
-        if(j) {
+        if(j)
             sh.setFill(scene().pApplet().color(153, 0, 76));
-            //System.out.println("index of this: " + Board.myBoard.indexOf(this));
-        }
         else
             if(isWhite)
                 sh.setFill(scene().pApplet().color(255));
@@ -76,7 +56,5 @@ public class Square extends InteractiveFrame {
                 sh.setFill(scene().pApplet().color(0));
 
         return j;
-
     }
-
 }

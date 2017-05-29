@@ -3,15 +3,12 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 import remixlab.bias.event.ClickEvent;
-import remixlab.bias.event.MotionShortcut;
 import remixlab.dandelion.constraint.AxisPlaneConstraint;
 import remixlab.dandelion.constraint.LocalConstraint;
 import remixlab.proscene.InteractiveFrame;
 import remixlab.proscene.MouseAgent;
 import remixlab.proscene.Scene;
-import remixlab.bias.Shortcut;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import static processing.core.PConstants.LEFT;
@@ -21,16 +18,16 @@ public abstract class Piece extends InteractiveFrame{
 
     int xpos, ypos, moves = 0, prevMove = -1;
     private  int z;
-    boolean pathBlocked;
-    ArrayList<Square> board;
-    //Moves with bitmask, first 3 bits for xpos, next 3 bits for ypos
-    //Move types next 3 bits, 0 for offensive, 1 for neutral, 2 for long Castling,
-    // 3 for short castling, 4 for passant capture
-    //5 for white promotion and 6 for black promotion
+    boolean pathBlocked, isDead = false;
+    /*
+        Moves with bitmask, first 3 bits for xpos, next 3 bits for ypos
+        Move types next 3 bits, 0 for offensive, 1 for neutral, 2 for long Castling,
+        3 for short castling, 4 for passant capture
+        5 for white promotion and 6 for black promotion
+    */
     HashSet<Integer> availableMoves = new HashSet<>();
 
     private PShape shape;
-    private PApplet parent;
     static private int center = Chess.w / 2;
     boolean isWhite;
 
@@ -40,7 +37,6 @@ public abstract class Piece extends InteractiveFrame{
         this.xpos = xpos;
         this.ypos = ypos;
         this.z = z;
-        this.parent = parent;
         shape = parent.loadShape(path);
 
         AxisPlaneConstraint theRotConstraint = new LocalConstraint();
@@ -49,7 +45,6 @@ public abstract class Piece extends InteractiveFrame{
 
         disableVisualHint();
         setHighlightingMode(InteractiveFrame.HighlightingMode.NONE);
-        //setPickingPrecision(PickingPrecision.FIXED);
         setShape("display");
         setClickBinding(LEFT, 1, "play");
 
@@ -59,7 +54,6 @@ public abstract class Piece extends InteractiveFrame{
         removeMotionBinding(MouseAgent.WHEEL_ID);
 
         setConstraint(theRotConstraint);
-
     }
 
     public void pick(PGraphics pg) {
@@ -87,20 +81,10 @@ public abstract class Piece extends InteractiveFrame{
     }
 
     public void play(ClickEvent event) {
-        System.out.println("Piece clicked, Moves:");
-        int x;
-        int y;
-        int index;
-        for (int i : availableMoves){
-            x = i & 7;
-            y = (i >>> 3)&7;
-            System.out.println("x: " + (i & 7) + ", y: " + ((i >>> 3)&7) +
-                    ", special move: " + ((i >>> 6)&7));
-
-            index = y*8 + x;
-            System.out.println(index);
-            Board.myBoard.get(index).paintMoves();
-
+        if (!isDead) {
+            Board.resetMoves();
+            for (int i : availableMoves)
+                Board.setMove(i & 63, this, i >>> 6);
         }
     }
 
@@ -120,28 +104,38 @@ public abstract class Piece extends InteractiveFrame{
 
     abstract void updateAvailableMoves();
 
+    void updateMoves(){
+        availableMoves.clear();
+        updateAvailableMoves();
+    }
+
+    private void kill(int i, int j){
+        Chess.boardState[i][j].isDead = true;
+        if (isWhite)
+            Chess.killWhite(Chess.boardState[i][j]);
+        else
+            Chess.killBlack(Chess.boardState[i][j]);
+        Chess.boardState[i][j].z -= 8;
+        Chess.boardState[i][j] = null;
+    }
+
     void move(int x, int y, int moveType){
-        prevMove = xpos + ypos*8;
         switch (moveType){
             case 0:
-                Chess.boardState[y][x] = this;
+                if (Chess.boardState[y][x] != null)
+                    kill(y, x);
                 break;
             case 1:
                 Chess.boardState[y][x] = this;
                 break;
             case 2:
-                Chess.boardState[y][x] = this;
-                Chess.boardState[y][3] = Chess.boardState[y][0];
-                Chess.boardState[y][0] = null;
+                Chess.boardState[y][0].updatePos(3, y);
                 break;
             case 3:
-                Chess.boardState[y][x] = this;
-                Chess.boardState[y][5] = Chess.boardState[y][7];
-                Chess.boardState[y][7] = null;
+                Chess.boardState[y][7].updatePos(5, y);
                 break;
             case 4:
-                Chess.boardState[y][x] = this;
-                Chess.boardState[ypos][x] = null;
+                kill(ypos, x);
                 break;
             case 5:
                 break;
@@ -150,12 +144,17 @@ public abstract class Piece extends InteractiveFrame{
             default:
                 break;
         }
+        updatePos(x, y);
+        Chess.updateMoves();
+    }
+
+    private void updatePos(int x, int y){
+        prevMove = xpos + ypos*8;
+        Chess.boardState[y][x] = this;
         Chess.boardState[ypos][xpos] = null;
         xpos = x;
         ypos = y;
         moves++;
-        availableMoves.clear();
-        updateAvailableMoves();
     }
 
     boolean attacks(int x, int y){

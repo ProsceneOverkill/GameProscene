@@ -1,3 +1,6 @@
+
+import remixlab.dandelion.core.GenericFrame;
+import remixlab.dandelion.core.KeyFrameInterpolator;
 import processing.core.PImage;
 import remixlab.dandelion.geom.Quat;
 import remixlab.dandelion.geom.Vec;
@@ -20,6 +23,7 @@ public class Chess extends PApplet{
     static boolean whiteTurn = true, isGaveOver = false;
     static String result;
     static King whiteKing, blackKing;
+    static KeyFrameInterpolator kfi;
 
     static void killWhite(Piece piece){
         deadWithe[deadWhiteI][deadWhiteJ] = piece;
@@ -155,6 +159,7 @@ public class Chess extends PApplet{
         lf = loadImage("mp_drakeq/drakeq_lf.tga");
         rt = loadImage("mp_drakeq/drakeq_rt.tga");
         up = loadImage("mp_drakeq/drakeq_up.tga");
+
         scene = new Scene(this);
         scene.setGridVisualHint(false);
         scene.setAxesVisualHint(false);
@@ -166,10 +171,7 @@ public class Chess extends PApplet{
                 scene, this);
         blackKing = new King(false, 4, 0, 5, "King1s.obj",
                 scene, this);
-        new Pawn(true, 6, 6, 1, "Pawn2s.obj",
-                scene, this);
-        new Pawn(false, 1, 1, 1, "Pawn1s.obj",
-                scene, this);
+
         //loadPieces();
         updateMoves();
 
@@ -180,7 +182,6 @@ public class Chess extends PApplet{
     private static final int s3 = 20;
 
     private void skybox(){
-
         pushMatrix();
         translate(-s2, -s2, s2+s3);
         rotateX(radians(-90));
@@ -223,8 +224,8 @@ public class Chess extends PApplet{
 
     @Override
     public void draw(){
-        //scale(0.5f);
         background(125);
+
         skybox();
         lights();
         directionalLight(500, 500, 50,
@@ -241,9 +242,16 @@ public class Chess extends PApplet{
                 scene.camera().position().y(),
                 scene.camera().position().z(),
                 0, 0, 1, 1, 20);
-
+        drawText();
         scene.drawFrames();
     }
+
+    private void drawText(){
+        scene.beginScreenDrawing();
+        text(whiteTurn? "Turno Blanco":"Turno Negro", 5, 20);
+        scene.endScreenDrawing();
+    }
+
 
     public static void main(String[] args) {
         PApplet.main("Chess");

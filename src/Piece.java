@@ -136,7 +136,7 @@ public abstract class Piece extends InteractiveFrame{
     boolean move(int x, int y, int moveType, boolean committed){
         if (Chess.whiteTurn != isWhite)
             return false;
-        boolean enPassant1 = false, enPassant2 = false;
+        boolean enPassant1 = false, enPassant2 = false, promotion = false;
         int murderedX = 0, murderedY = 0;
         King king = isWhite ? Chess.whiteKing : Chess.blackKing;
         Piece killed = null, piece1 = null, piece2 = null;
@@ -163,13 +163,12 @@ public abstract class Piece extends InteractiveFrame{
                 Chess.boardState[ypos][x] = null;
                 break;
             case 5:
-                if(this instanceof Pawn && x + y*8 >= 0 && x + y*8 <= 7)
-                    promote(x, y);
-
-                break;
-            case 6:
-                if(this instanceof Pawn && x + y*8 >= 56 && x + y*8 <= 63)
-                    promote(x, y);
+                promotion = true;
+                if (Chess.boardState[y][x] != null){
+                    murderedX = x;
+                    murderedY = y;
+                    killed = Chess.boardState[y][x];
+                }
                 break;
             case 7:
                 if (isIn(y, x - 1)) {
@@ -201,6 +200,11 @@ public abstract class Piece extends InteractiveFrame{
             Chess.boardState[murderedY][murderedX] = killed;
             Chess.updateMoves();
             return true;
+        }
+        if (promotion){
+            promote();
+            kill(this);
+            Chess.updateMoves();
         }
         if (killed != null) {
             kill(killed);
@@ -234,8 +238,8 @@ public abstract class Piece extends InteractiveFrame{
     private void resetMove(){
         int x = prevMove & 7;
         int y = prevMove >>> 3;
-        Chess.boardState[y][x] = this;
         Chess.boardState[ypos][xpos] = null;
+        Chess.boardState[y][x] = this;
         xpos = x;
         ypos = y;
         moves--;
@@ -243,24 +247,20 @@ public abstract class Piece extends InteractiveFrame{
 
     private void updatePos(int x, int y){
         prevMove = xpos + ypos*8;
-        Chess.boardState[y][x] = this;
         Chess.boardState[ypos][xpos] = null;
+        Chess.boardState[y][x] = this;
         xpos = x;
         ypos = y;
         moves++;
     }
 
-    private void promote(int x, int y){
-        Piece pi;
-        if(isWhite){
-            pi = new Queen(true, x, y, 14, "Queen2.obj",
+    private void promote(){
+        //Chess.boardState[ypos][xpos] = null;
+        if(isWhite)
+            new Queen(true, xpos, ypos, 14, "Queen2.obj",
                     Chess.scene, parent);
-        }else{
-            pi = new Queen(false, x, y, 14, "Queen1.obj",
+        else
+            new Queen(false, xpos, ypos, 14, "Queen1.obj",
                     Chess.scene, parent);
-        }
-
-        Chess.boardState[x][y] = pi;
-        kill(this);
     }
 }

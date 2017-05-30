@@ -22,14 +22,12 @@ class Pawn extends Piece {
         int up = isWhite ? -1 : 1;
         for (int i = -1; i <= 1; i++)
             if (validMove(xpos + i, ypos+up)) {
-                if (i == 0)
+                if (ypos+up == 0 || ypos+up == 7)
+                    availableMoves.add(xpos + i + 8*(ypos+up) + 5*64);
+                else if (i == 0)
                     availableMoves.add(xpos + i + 8 * (ypos + up) + 64);
                 else
                     availableMoves.add(xpos + i + 8 * (ypos + up));
-                if (isWhite && ypos+up == 0)
-                    availableMoves.add(xpos + i + 8*(ypos+up) + 5*64);
-                else if (!isWhite && ypos+up == 7)
-                    availableMoves.add(xpos + i + 8*(ypos+up) + 6*64);
             }
 
         if (moves == 0){

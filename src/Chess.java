@@ -1,5 +1,7 @@
+
 import remixlab.dandelion.core.GenericFrame;
 import remixlab.dandelion.core.KeyFrameInterpolator;
+import processing.core.PImage;
 import remixlab.dandelion.geom.Quat;
 import remixlab.dandelion.geom.Vec;
 import remixlab.proscene.*;
@@ -10,7 +12,7 @@ import java.util.HashSet;
 
 public class Chess extends PApplet{
 
-    static Scene scene, scene2;
+    static Scene scene;
 
     static int w = 20;
     static Piece[][] boardState = new Piece[8][8];
@@ -86,11 +88,6 @@ public class Chess extends PApplet{
         return true;
     }
 
-    @Override
-    public void settings(){
-        size(700,700, P3D);
-    }
-
     void loadPieces(){
         new Queen(false, 3, 0, 14, "Queen1.obj",
                 scene, this);
@@ -137,16 +134,33 @@ public class Chess extends PApplet{
         }
     }
 
+    PImage bk, dn, ft, lf, rt, up;
+
+    @Override
+    public void settings(){
+        size(700,700, P3D);
+    }
+
     @Override
     public void setup(){
+        bk = loadImage("midnight-silence_bk.tga");
+        dn = loadImage("midnight-silence_dn.tga");
+        ft = loadImage("midnight-silence_ft.tga");
+        lf = loadImage("midnight-silence_lf.tga");
+        rt = loadImage("midnight-silence_rt.tga");
+        up = loadImage("midnight-silence_up.tga");
         scene = new Scene(this);
-        //scene2 = new Scene(this, minimap)
         scene.setGridVisualHint(false);
+        scene.setAxesVisualHint(false);
         board = new Board(this);
 
         whiteKing = new King(true, 4, 7, 14, "King2.obj",
                 scene, this);
         blackKing = new King(false, 4, 0, 14, "King1.obj",
+                scene, this);
+        new Pawn(true, 6, 6, 5, "Pawn2.obj",
+                scene, this);
+        new Pawn(false, 1, 1, 5, "Pawn1.obj",
                 scene, this);
         //loadPieces();
         //scene.camera().frame().setRotationSensitivity((float) 0.001);
@@ -154,11 +168,57 @@ public class Chess extends PApplet{
         updateMoves();
     }
 
+    private static final int size = 360;
+    private static final int s2 = size/2;
+    private static final int s3 = 40;
+
+    private void skybox(){
+
+        pushMatrix();
+        translate(-s2, -s2, s2+s3);
+        rotateX(radians(-90));
+        image(bk, 0, 0, size, size);
+        popMatrix();
+
+        pushMatrix();
+        translate(s2, s2, s2+s3);
+        rotateX(radians(90));
+        rotateZ(radians(180));
+        image(ft, 0, 0, size, size);
+        popMatrix();
+
+        pushMatrix();
+        translate(-s2, -s2, -s2+s3);
+        image(dn, 0, 0, size, size);
+        popMatrix();
+
+        pushMatrix();
+        translate(-s2, -s2, s2+s3);
+        image(up, 0, 0, size, size);
+        popMatrix();
+
+        pushMatrix();
+        translate(s2, -s2, s2+s3);
+        rotateZ(radians(90));
+        rotateX(radians(-90));
+        image(rt, 0, 0, size, size);
+        popMatrix();
+
+        pushMatrix();
+        translate(-s2, s2, s2+s3);
+        rotateZ(radians(-90));
+        rotateX(radians(-90));
+        image(lf, 0, 0, size, size);
+        popMatrix();
+    }
+
     @Override
     public void draw(){
         background(125);
+        skybox();
+
         lights();
-        directionalLight(50, 50, 50,
+        directionalLight(500, 500, 50,
                 ((Quat)scene.camera().orientation()).x() - scene.camera().position().x(),
                 ((Quat)scene.camera().orientation()).y() - scene.camera().position().y(),
                 ((Quat)scene.camera().orientation()).z() - scene.camera().position().z());
@@ -174,6 +234,7 @@ public class Chess extends PApplet{
                 0, 0, 1, 1, 20);
         drawText();
         scene.drawFrames();
+
     }
 
     private void drawText(){

@@ -143,15 +143,21 @@ public class Chess extends PApplet{
 
     @Override
     public void setup(){
-        /*bk = loadImage("midnight-silence_bk.tga");
-        dn = loadImage("midnight-silence_dn.tga");
-        ft = loadImage("midnight-silence_ft.tga");
-        lf = loadImage("midnight-silence_lf.tga");
-        rt = loadImage("midnight-silence_rt.tga");
-        up = loadImage("midnight-silence_up.tga");*/
+
+
+        bk = loadImage("mp_drakeq/drakeq_bk.tga");
+        dn = loadImage("mp_drakeq/drakeq_dn.tga");
+        ft = loadImage("mp_drakeq/drakeq_ft.tga");
+        lf = loadImage("mp_drakeq/drakeq_lf.tga");
+        rt = loadImage("mp_drakeq/drakeq_rt.tga");
+        up = loadImage("mp_drakeq/drakeq_up.tga");
+
         scene = new Scene(this);
         scene.setGridVisualHint(false);
         scene.setAxesVisualHint(false);
+        scene.camera().setPosition(new Vec(0, 50, 100));
+        scene.camera().lookAt(new Vec(0, 0, 0));
+        
         board = new Board(this);
 /*
         whiteKing = new King(true, 4, 7, 14, "King2.obj",
@@ -168,9 +174,10 @@ public class Chess extends PApplet{
         //scene.camera().frame().setRotationSensitivity((float) 0.001);
 
         updateMoves();
+
     }
 
-    private static final int size = 360;
+    private static final int size = 380;
     private static final int s2 = size/2;
     private static final int s3 = 40;
 
@@ -190,12 +197,14 @@ public class Chess extends PApplet{
         popMatrix();
 
         pushMatrix();
-        translate(-s2, -s2, -s2+s3);
+        translate(s2, -s2, -s2+s3);
+        rotateZ(radians(90));
         image(dn, 0, 0, size, size);
         popMatrix();
 
         pushMatrix();
-        translate(-s2, -s2, s2+s3);
+        translate(s2, -s2, s2+s3);
+        rotateZ(radians(90));
         image(up, 0, 0, size, size);
         popMatrix();
 
@@ -216,8 +225,15 @@ public class Chess extends PApplet{
 
     @Override
     public void draw(){
+        scale(0.5f);
         background(125);
-        //skybox();
+
+
+
+        skybox();
+
+
+        skybox();
 
         lights();
         directionalLight(500, 500, 50,
@@ -236,7 +252,6 @@ public class Chess extends PApplet{
                 0, 0, 1, 1, 20);
         drawText();
         scene.drawFrames();
-
     }
 
     private void drawText(){

@@ -212,8 +212,10 @@ public abstract class Piece extends InteractiveFrame{
         }
 
         Chess.whiteTurn = !Chess.whiteTurn;
-        if (Chess.whiteTurn)
-            Chess.setWhitePos();
+        if (Chess.whiteTurn){
+            Chess.setWhitePos(Chess.firstTime);
+
+        }
         else
             Chess.setBlackPos();
         if (Chess.gameOver()) {

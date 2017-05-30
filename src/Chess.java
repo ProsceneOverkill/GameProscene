@@ -24,6 +24,7 @@ public class Chess extends PApplet{
     static String result;
     static King whiteKing, blackKing;
     static KeyFrameInterpolator kfi;
+    static boolean firstTime = true;
 
     static void killWhite(Piece piece){
         deadWithe[deadWhiteI][deadWhiteJ] = piece;
@@ -141,13 +142,26 @@ public class Chess extends PApplet{
         size(700,700, P3D);
     }
 
-    static void setWhitePos(){
-        scene.camera().setPosition(new Vec(0, 50, 100));
-        scene.camera().lookAt(new Vec(0, 0, 0));
+    static void setWhitePos(boolean fT){
+        if(fT){
+            scene.camera().setPosition(new Vec(0, 50, 100));
+            scene.camera().lookAt(new Vec(0, 0, 0));
+        }
+        else {
+            System.out.println("asdf");
+            scene.camera().setPosition(new Vec(0, 50, 100));
+            scene.camera().setOrientation(PI, PI);
+            scene.camera().lookAt(new Vec(0, 0, 0));
+        }
+
     }
 
     static void setBlackPos(){
+        firstTime = false;
+        //scene.camera().frame().rotateAroundFrame(PI/8, PI/8, PI/4,Board.squares.get(36));
         scene.camera().setPosition(new Vec(0, -50, 100));
+        scene.camera().setOrientation(PI, PI);
+
         scene.camera().lookAt(new Vec(0, 0, 0));
     }
 
@@ -163,7 +177,7 @@ public class Chess extends PApplet{
         scene = new Scene(this);
         scene.setGridVisualHint(false);
         scene.setAxesVisualHint(false);
-        setWhitePos();
+        setWhitePos(firstTime);
 
         board = new Board(this);
 

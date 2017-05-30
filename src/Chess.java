@@ -1,4 +1,7 @@
+import remixlab.dandelion.core.GenericFrame;
+import remixlab.dandelion.core.KeyFrameInterpolator;
 import remixlab.dandelion.geom.Quat;
+import remixlab.dandelion.geom.Vec;
 import remixlab.proscene.*;
 import processing.core.PApplet;
 
@@ -18,6 +21,7 @@ public class Chess extends PApplet{
     static boolean whiteTurn = true, isGaveOver = false;
     static String result;
     static King whiteKing, blackKing;
+    static KeyFrameInterpolator kfi;
 
     static void killWhite(Piece piece){
         deadWithe[deadWhiteI][deadWhiteJ] = piece;
@@ -145,6 +149,8 @@ public class Chess extends PApplet{
         blackKing = new King(false, 4, 0, 14, "King1.obj",
                 scene, this);
         //loadPieces();
+        //scene.camera().frame().setRotationSensitivity((float) 0.001);
+
         updateMoves();
     }
 
@@ -166,9 +172,16 @@ public class Chess extends PApplet{
                 scene.camera().position().y(),
                 scene.camera().position().z(),
                 0, 0, 1, 1, 20);
-
+        drawText();
         scene.drawFrames();
     }
+
+    private void drawText(){
+        scene.beginScreenDrawing();
+        text(whiteTurn? "Turno Blanco":"Turno Negro", 5, 20);
+        scene.endScreenDrawing();
+    }
+
 
     public static void main(String[] args) {
         PApplet.main("Chess");

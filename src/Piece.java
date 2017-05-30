@@ -1,7 +1,4 @@
-import processing.core.PApplet;
-import processing.core.PConstants;
-import processing.core.PGraphics;
-import processing.core.PShape;
+import processing.core.*;
 import remixlab.bias.event.ClickEvent;
 import remixlab.dandelion.constraint.AxisPlaneConstraint;
 import remixlab.dandelion.constraint.LocalConstraint;
@@ -19,6 +16,7 @@ public abstract class Piece extends InteractiveFrame{
     int xpos, ypos, moves = 0, prevMove = -1;
     private  int z;
     boolean pathBlocked, isDead = false;
+    PApplet parent;
     /*
         Moves with bitmask, first 3 bits for xpos, next 3 bits for ypos
         Move types next 3 bits, 0 for offensive, 1 for neutral, 2 for long Castling,
@@ -38,6 +36,7 @@ public abstract class Piece extends InteractiveFrame{
         this.ypos = ypos;
         this.z = z;
         prevMove = xpos + ypos*8;
+        this.parent = parent;
         shape = parent.loadShape(path);
 
 
@@ -164,8 +163,13 @@ public abstract class Piece extends InteractiveFrame{
                 Chess.boardState[ypos][x] = null;
                 break;
             case 5:
+                if(this instanceof Pawn && x + y*8 >= 0 && x + y*8 <= 7)
+                    promote(x, y);
+
                 break;
             case 6:
+                if(this instanceof Pawn && x + y*8 >= 56 && x + y*8 <= 63)
+                    promote(x, y);
                 break;
             case 7:
                 if (isIn(y, x - 1)) {
@@ -244,5 +248,19 @@ public abstract class Piece extends InteractiveFrame{
         xpos = x;
         ypos = y;
         moves++;
+    }
+
+    private void promote(int x, int y){
+        Piece pi;
+        if(isWhite){
+            pi = new Queen(true, x, y, 14, "Queen2.obj",
+                    Chess.scene, parent);
+        }else{
+            pi = new Queen(false, x, y, 14, "Queen1.obj",
+                    Chess.scene, parent);
+        }
+
+        Chess.boardState[x][y] = pi;
+        kill(this);
     }
 }

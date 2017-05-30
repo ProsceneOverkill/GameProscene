@@ -148,9 +148,8 @@ public class Chess extends PApplet{
             scene.camera().lookAt(new Vec(0, 0, 0));
         }
         else {
-            System.out.println("asdf");
             scene.camera().setPosition(new Vec(0, 50, 100));
-            scene.camera().setOrientation(PI, PI);
+            scene.camera().setOrientation(2*PI, 2*PI);
             scene.camera().lookAt(new Vec(0, 0, 0));
         }
 

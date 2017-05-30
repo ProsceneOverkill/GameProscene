@@ -143,26 +143,28 @@ public class Chess extends PApplet{
 
     @Override
     public void setup(){
-        bk = loadImage("midnight-silence_bk.tga");
+        /*bk = loadImage("midnight-silence_bk.tga");
         dn = loadImage("midnight-silence_dn.tga");
         ft = loadImage("midnight-silence_ft.tga");
         lf = loadImage("midnight-silence_lf.tga");
         rt = loadImage("midnight-silence_rt.tga");
-        up = loadImage("midnight-silence_up.tga");
+        up = loadImage("midnight-silence_up.tga");*/
         scene = new Scene(this);
         scene.setGridVisualHint(false);
         scene.setAxesVisualHint(false);
         board = new Board(this);
-
+/*
         whiteKing = new King(true, 4, 7, 14, "King2.obj",
                 scene, this);
         blackKing = new King(false, 4, 0, 14, "King1.obj",
-                scene, this);
-        new Pawn(true, 6, 6, 5, "Pawn2.obj",
+                scene, this);*/
+        /*new Pawn(true, 6, 6, 5, "Pawn2.obj",
                 scene, this);
         new Pawn(false, 1, 1, 5, "Pawn1.obj",
                 scene, this);
-        //loadPieces();
+
+                */
+        loadPieces();
         //scene.camera().frame().setRotationSensitivity((float) 0.001);
 
         updateMoves();
@@ -215,7 +217,7 @@ public class Chess extends PApplet{
     @Override
     public void draw(){
         background(125);
-        skybox();
+        //skybox();
 
         lights();
         directionalLight(500, 500, 50,

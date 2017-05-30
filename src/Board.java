@@ -25,7 +25,7 @@ class Board {
 
     Board(PApplet parent){
         int delta = 4 * Chess.w - Chess.w / 2;
-        Cube.initialize(10, 10, 4);
+        Cube.initialize(5, 5, 2);
         squares = new ArrayList<>(64);
         for(int i = 0; i < 64; i++)
             squares.add(null);

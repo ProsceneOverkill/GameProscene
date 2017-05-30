@@ -1,0 +1,13 @@
+# Blender MTL File: 'chess.blend'
+# Material Count: 1
+
+newmtl woodlight4
+Ns 35.294118
+Ka 0.000000 0.000000 0.000000
+Kd 0.646162 0.565369 0.434441
+Ks 0.623529 0.639216 0.560784
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd woodlight4.jpg

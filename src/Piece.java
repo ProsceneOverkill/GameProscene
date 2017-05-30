@@ -122,7 +122,7 @@ public abstract class Piece extends InteractiveFrame{
             Chess.killWhite(piece);
         else
             Chess.killBlack(piece);
-        piece.z -= 8;
+        piece.z -= 4;
     }
 
     boolean isAttacked(){
@@ -212,6 +212,10 @@ public abstract class Piece extends InteractiveFrame{
         }
 
         Chess.whiteTurn = !Chess.whiteTurn;
+        if (Chess.whiteTurn)
+            Chess.setWhitePos();
+        else
+            Chess.setBlackPos();
         if (Chess.gameOver()) {
             Chess.isGaveOver = true;
             king = Chess.whiteTurn ? Chess.whiteKing : Chess.blackKing;
@@ -257,10 +261,10 @@ public abstract class Piece extends InteractiveFrame{
     private void promote(){
         //Chess.boardState[ypos][xpos] = null;
         if(isWhite)
-            new Queen(true, xpos, ypos, 14, "Queen2.obj",
+            new Queen(true, xpos, ypos, 14, "Queen2s.obj",
                     Chess.scene, parent);
         else
-            new Queen(false, xpos, ypos, 14, "Queen1.obj",
+            new Queen(false, xpos, ypos, 14, "Queen1s.obj",
                     Chess.scene, parent);
     }
 }

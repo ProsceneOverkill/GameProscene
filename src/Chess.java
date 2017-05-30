@@ -11,7 +11,7 @@ public class Chess extends PApplet{
 
     static Scene scene;
 
-    static int w = 20;
+    static int w = 10;
     static Piece[][] boardState = new Piece[8][8];
     private static Piece[][] deadWithe = new Piece[8][2];
     private static Piece[][] deadBlack = new Piece[8][2];
@@ -85,56 +85,66 @@ public class Chess extends PApplet{
     }
 
     void loadPieces(){
-        new Queen(false, 3, 0, 14, "Queen1.obj",
+        new Queen(false, 3, 0, 6, "Queen1s.obj",
                 scene, this);
-        new Queen(true, 3, 7, 14, "Queen2.obj",
-                scene, this);
-
-        whiteKing = new King(true, 4, 7, 14, "King2.obj",
-                scene, this);
-        blackKing = new King(false, 4, 0, 14, "King1.obj",
+        new Queen(true, 3, 7, 6, "Queen2s.obj",
                 scene, this);
 
-        new Tower(false, 0, 0, 7, "Tower1.obj",
+        whiteKing = new King(true, 4, 7, 6, "King2s.obj",
                 scene, this);
-        new Tower(false, 7, 0, 7, "Tower1.obj",
-                scene, this);
-        new Tower(true, 0, 7, 7, "Tower2.obj",
-                scene, this);
-        new Tower(true, 7, 7, 7, "Tower2.obj",
+        blackKing = new King(false, 4, 0, 6, "King1s.obj",
                 scene, this);
 
-        new Horse(false, 6, 0, 8, "Horse1.obj",
+        new Tower(false, 0, 0, 3, "Tower1s.obj",
                 scene, this);
-        new Horse(false, 1, 0, 8, "Horse1.obj",
+        new Tower(false, 7, 0, 3, "Tower1s.obj",
                 scene, this);
-        new Horse(true, 1, 7, 8, "Horse2.obj",
+        new Tower(true, 0, 7, 3, "Tower2s.obj",
                 scene, this);
-        new Horse(true, 6, 7, 8, "Horse2.obj",
+        new Tower(true, 7, 7, 3, "Tower2s.obj",
                 scene, this);
 
-        new Bishop(false, 2, 0, 10, "Bishop1.obj",
+        new Horse(false, 6, 0, 3, "Horse1s.obj",
                 scene, this);
-        new Bishop(false, 5, 0, 10, "Bishop1.obj",
+        new Horse(false, 1, 0, 3, "Horse1s.obj",
                 scene, this);
-        new Bishop(true, 2, 7, 10, "Bishop2.obj",
+        new Horse(true, 1, 7, 3, "Horse2s.obj",
                 scene, this);
-        new Bishop(true, 5, 7, 10, "Bishop2.obj",
+        new Horse(true, 6, 7, 3, "Horse2s.obj",
+                scene, this);
+
+        new Bishop(false, 2, 0, 4, "Bishop1s.obj",
+                scene, this);
+        new Bishop(false, 5, 0, 4, "Bishop1s.obj",
+                scene, this);
+        new Bishop(true, 2, 7, 4, "Bishop2s.obj",
+                scene, this);
+        new Bishop(true, 5, 7, 4, "Bishop2s.obj",
                 scene, this);
 
         for(int i = 0; i < 8; i++){
-            new Pawn(true, i, 6, 5, "Pawn2.obj",
+            new Pawn(true, i, 6, 1, "Pawn2s.obj",
                     scene, this);
-            new Pawn(false, i, 1, 5, "Pawn1.obj",
+            new Pawn(false, i, 1, 1, "Pawn1s.obj",
                     scene, this);
         }
     }
 
-    PImage bk, dn, ft, lf, rt, up;
+    private PImage bk, dn, ft, lf, rt, up;
 
     @Override
     public void settings(){
         size(700,700, P3D);
+    }
+
+    static void setWhitePos(){
+        scene.camera().setPosition(new Vec(0, 50, 100));
+        scene.camera().lookAt(new Vec(0, 0, 0));
+    }
+
+    static void setBlackPos(){
+        scene.camera().setPosition(new Vec(0, -50, 100));
+        scene.camera().lookAt(new Vec(0, 0, 0));
     }
 
     @Override
@@ -148,27 +158,26 @@ public class Chess extends PApplet{
         scene = new Scene(this);
         scene.setGridVisualHint(false);
         scene.setAxesVisualHint(false);
-        scene.camera().setPosition(new Vec(0, 50, 100));
-        scene.camera().lookAt(new Vec(0, 0, 0));
-        
+        setWhitePos();
+
         board = new Board(this);
 
-        whiteKing = new King(true, 4, 7, 14, "King2.obj",
+        whiteKing = new King(true, 4, 7, 5, "King2s.obj",
                 scene, this);
-        blackKing = new King(false, 4, 0, 14, "King1.obj",
+        blackKing = new King(false, 4, 0, 5, "King1s.obj",
                 scene, this);
-        new Pawn(true, 6, 6, 5, "Pawn2.obj",
+        new Pawn(true, 6, 6, 1, "Pawn2s.obj",
                 scene, this);
-        new Pawn(false, 1, 1, 5, "Pawn1.obj",
+        new Pawn(false, 1, 1, 1, "Pawn1s.obj",
                 scene, this);
         //loadPieces();
         updateMoves();
 
     }
 
-    private static final int size = 380;
+    private static final int size = 230;
     private static final int s2 = size/2;
-    private static final int s3 = 40;
+    private static final int s3 = 20;
 
     private void skybox(){
 
@@ -214,7 +223,7 @@ public class Chess extends PApplet{
 
     @Override
     public void draw(){
-        scale(0.5f);
+        //scale(0.5f);
         background(125);
         skybox();
         lights();

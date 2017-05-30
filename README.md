@@ -1,2 +1,4 @@
 # GameProscene
-1st Proscene workshop - Visual Computing
+3D Chess Videogame made with processing and proscene.
+
+National University of Colombia
